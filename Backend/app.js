@@ -39,6 +39,6 @@ app.use((req, res, next) => {
 app.use('/api/auth', AuthRoute)
 app.use('/api/user', authenticate, UserRoute)
 app.use('/api/admin', authenticate, AdminRoute)
-app.use('/api/place', authenticate, PlaceRoute)
+app.use('/api/place', PlaceRoute)
 
 app.listen(4000, () => console.log('GP up on 4000..'))

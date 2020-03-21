@@ -19,7 +19,7 @@ class AdminController {
         let response = {}
         // send request decision approval or rejection
         if (req.body.decision) { // if approved
-            response = { status: statusTypes[0] } //? approve activate the seller account
+            response = { status: statusTypes[0], isSeller: true } //? approve activate the seller account
         } else { // rejected
             response = { status: statusTypes[2] } //? rejected 
         }

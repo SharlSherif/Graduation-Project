@@ -27,7 +27,7 @@ class CRUD {
 
             // choose what to or not to display
             let _display = {
-                isDeleted: 0,
+                isDeleted: false,
                 ...display
             }
 
@@ -60,7 +60,7 @@ class CRUD {
 
             // choose what to or not to display
             let _display = {
-                isDeleted: 0,
+                isDeleted: false,
                 ...display
             }
 
@@ -111,7 +111,7 @@ class CRUD {
 
     static delete(schema, where) {
         return new Promise((resolve, reject) => {
-            this.update_one(schema, where, {
+            this.updateOne(schema, where, {
                 $set: {
                     isDeleted: true
                 }

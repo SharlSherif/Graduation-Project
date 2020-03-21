@@ -30,7 +30,7 @@ const place = mongoose.Schema({
     areaName: String,
     isAvailable: {
         type: Boolean,
-        default: false
+        default: true
     },
     price: {
         currency: String,
