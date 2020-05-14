@@ -37,7 +37,7 @@ class AuthController {
             admin.password = undefined
             let token = encode(JSON.stringify(admin))
             res.setHeader('token', token) // set token in header
-            res.status(200).send(responseObject(true, Admin, 'Logged in')) // send a response
+            res.status(200).send(responseObject(true, {admin, token}, 'Logged in')) // send a response
         } else {
             res.status(404).send(responseObject(false, null, 'Admin not found'))
         }

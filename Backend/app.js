@@ -2,6 +2,8 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const app = express()
+var cors = require('cors')
+
 //? make enviroment variables accessible
 require('dotenv').config()
 //* establish db connection
@@ -21,7 +23,7 @@ app.use(
   })
 )
 app.use(bodyParser.json())
-
+app.use(cors())
 // allowing CORS headers
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*')

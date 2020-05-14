@@ -2,7 +2,8 @@ const { decode } = require('../helpers/jwt')
 
 module.exports = (req, res, next, mustBeAdmin = false, mustBeSeller = false) => {
   try {
-    const token = req.headers.authorization
+    const token = req.headers['authorization']
+    console.log(req.headers)
     const decoded_token = decode(token)
     // must be a seller but the user is not a seller
     if (mustBeSeller && !decoded_token.isSeller) {
