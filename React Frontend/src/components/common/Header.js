@@ -40,7 +40,7 @@ class Header extends React.Component {
 	logout = () => {
 		localStorage.removeItem('token')
 		localStorage.removeItem('user')
-		window.location = ('/admin/login')
+		window.location = ('/listing')
 	  }
 	
 	render() {
@@ -56,9 +56,25 @@ class Header extends React.Component {
 						<Nav.Link eventKey={0} as={NavLink} activeclassname="active" exact to="/listing">
 			               Home <span className="sr-only">(current)</span>
 			            </Nav.Link>
-						<Nav.Link eventKey={0} onClick={this.logout} as={NavLink} exact>
-			               Logout
-			            </Nav.Link>
+
+						{
+							!!localStorage.token?
+							<Nav.Link eventKey={0} onClick={this.logout} as={NavLink} exact>
+								Logout
+							</Nav.Link>
+							:
+						<React.Fragment>
+						<Nav.Link eventKey={0} to="/register" as={NavLink} exact>
+							Sign Up
+						 </Nav.Link>
+							 
+						 <Nav.Link eventKey={0} to="/login" as={NavLink} exact>
+							Login
+						 </Nav.Link>
+							</React.Fragment>
+						
+						}
+					
 			            {/* <Nav.Link eventKey={1} as={NavLink} activeclassname="active" to="/offers">
              				<Icofont icon='sale-discount'/> Offers <Badge variant="danger">New</Badge>
 			            </Nav.Link>

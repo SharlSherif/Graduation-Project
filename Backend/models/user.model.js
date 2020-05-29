@@ -6,7 +6,7 @@ const moment = require('moment')
 const statusTypes = require('../helpers/statusTypes.json')
 
 const User = mongoose.Schema({
-    placesFK: [{
+    placesFK: [{ // request for rental
         type: ObjectID,
         ref: 'place'
     }],

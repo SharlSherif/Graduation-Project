@@ -4,6 +4,11 @@ const UserController = require('../controllers/user.controller');
 const router = Router();
 
 router.post('/apply', UserController.applyToBeSeller)
+//? request rental from the property owner (THIS HAS TO BE APPROVED BY THE SELLER)
+router.get('/rent/request/:id', UserController.rentalRequest)
+
+router.get('/profile', UserController.profileDetails)
+
 router.get('/', UserController.getData);
 
 router.put(

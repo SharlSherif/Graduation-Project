@@ -1,5 +1,6 @@
 const CRUD = require('../helpers/crud')
 const User = require('../models/user.model')
+const Place = require('../models/place.model')
 const statusTypes = require('../helpers/statusTypes.json')
 
 class UserController {
@@ -29,6 +30,18 @@ class UserController {
             })
     }
 
+    static async profileDetails(req, res) {
+        try {
+            let userResponse = await CRUD.getOne(User, 'placesFK', { _id: req.user._id })
+            let rentalRequests = userResponse.data.placesFK
+            let userConfirmedRentalsResponse = await CRUD.getData(Place, true, { renters: req.user._id })
+            let confirmedRentals = userConfirmedRentalsResponse.data
+            res.status(200).send({ confirmedRentals, rentalRequests })
+        } catch (e) {
+            res.status(400).send(e)
+        }
+    }
+
     static async applyToBeSeller(req, res) {
         let address = req.body.address;
         let socialLink = req.body.socialLink
@@ -44,6 +57,18 @@ class UserController {
 
     static async update(req, res) {
         await CRUD.updateOne(User, { _id: req.params.id }, { $set: req.body })
+            .then(response => {
+                res.status(201).send(response)
+            })
+            .catch(err => {
+                res.status(400).send(err)
+            })
+    }
+
+
+    static async rentalRequest(req, res) {
+        let placeID = req.params.id
+        await CRUD.updateOne(User, { _id: req.user._id }, { $push: { placesFK: placeID } })
             .then(response => {
                 res.status(201).send(response)
             })

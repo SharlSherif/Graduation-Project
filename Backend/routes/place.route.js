@@ -16,10 +16,10 @@ router.put(
     (req, res, next) => authenticate(req, res, next, false, true), // must be seller
     PlaceController.update
 );
-router.get(
-    '/rent/:id',
+router.post(
+    '/rent/',
     (req, res, next) => authenticate(req, res, next, false, true), // must be seller
-    PlaceController.rent
+    PlaceController.confirmRental
 );
 router.delete(
     '/:id',
