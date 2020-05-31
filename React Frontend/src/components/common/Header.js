@@ -59,9 +59,15 @@ class Header extends React.Component {
 
 						{
 							!!localStorage.token?
+							<>
+									<Nav.Link eventKey={0} to="/myaccount/requests" as={NavLink} exact>
+								My Account
+							</Nav.Link>
 							<Nav.Link eventKey={0} onClick={this.logout} as={NavLink} exact>
 								Logout
 							</Nav.Link>
+					
+							</>
 							:
 						<React.Fragment>
 						<Nav.Link eventKey={0} to="/register" as={NavLink} exact>
