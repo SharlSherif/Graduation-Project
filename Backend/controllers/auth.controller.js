@@ -34,7 +34,7 @@ class AuthController {
 
     static async adminLogin(req, res) {
         const { username, password } = req.body;
-        const admin = await Admin.findOne({ username, password }).populate('placesFK').exec()
+        const admin = await Admin.findOne({ username, password }).exec()
         console.log(admin)
         if (admin !== null) {
             admin.password = undefined

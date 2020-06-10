@@ -31,6 +31,8 @@ class PlaceController {
     }
 
     static async create(req, res) {
+        let user = req.user;
+        req.body.author = user._id
         await CRUD.create(req.body, Place)
             .then(response => {
                 res.status(201).send(response)
@@ -40,15 +42,37 @@ class PlaceController {
             })
     }
 
+    static async SellerPosts(req, res) {
+        let SellerID = req.user._id;
+
+        await CRUD.getData(Place, true, { author: SellerID })
+            .then(response => {
+                res.status(201).send(response)
+            })
+            .catch(err => {
+                res.status(400).send(err)
+            })
+    }
+
+    static async SellerRentalRequests(req, res) {
+        let SellerID = req.user._id;
+        // ? all places posted by the seller
+        let response = await Place.find({author: SellerID}).populate(['rentalRequests', 'renters']).exec()
+        // let response = await CRUD.getData(Place, true, { author: SellerID })
+        console.log(response)
+        res.status(200).send(response)
+    }
+
+
     static async confirmRental(req, res) {
         console.log(req.body)
         let { placeID, userID } = req.body;
-        await CRUD.updateOne(Place, { _id: placeID }, { $push: { renters: userID }, $inc: { 'residents.current': 1 } })
+        await CRUD.updateOne(Place, { _id: placeID }, { $push: { renters: userID }, $pull: { rentalRequests: userID }, $inc: { 'residents.current': 1 } })
             .then(async response => {
-                await CRUD.updateOne(User, { _id: userID }, { $pull: { placesFK: placeID } })
-                    .then(async secondResponse => {
-                        res.status(201).send(response)
-                    })
+                // await CRUD.updateOne(Place, { _id: placeID }, { $pull: { placesFK: placeID } })
+                //     .then(async () => {
+                res.status(201).send(response)
+                // })
             })
             .catch(err => {
                 res.status(400).send(err)

@@ -1,29 +1,46 @@
 import React from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, } from 'react-bootstrap';
 import CardItem from '../common/CardItem';
-import Context from '../context'
 
-class ConfirmedRentals extends React.Component {
+class Posts extends React.Component {
     constructor(props, context) {
         super(props, context);
 
         this.state = {
+            data:[]
         };
     }
-    static contextType = Context;
+
+    async componentDidMount() {
+        let url = 'http://localhost:4000/api/place/seller/requests/'
+        await fetch(url, {
+           method: 'GET', // *GET, POST, PUT, DELETE, etc.
+           cache: "no-cache",
+           credentials: 'same-origin', // include, *same-origin, omit
+           headers: {
+              'Content-Type': 'application/json',
+              'Authorization': localStorage.token
+           }
+        })
+           .then(response => response.json())
+           .then(json => {
+              console.log(json)
+              this.setState({ data: json })
+              // this.setState({ listing: json.data, isLoading: false })
+           })
+           .catch(err => console.log(err))
+    }
 
     render() {
-        console.log("COnfirmedRentals  :", this.context)
         return (
             <>
                 <div className='p-4 bg-white shadow-sm'>
                     <Row>
                         <Col md={12}>
-                            <h4 className="font-weight-bold mt-0 mb-3">Confirmed Rentals</h4>
+                            <h4 className="font-weight-bold mt-0 mb-3">Properties</h4>
                         </Col>
                         <Col md={12} sm={12} className="mb-4 pb-2">
-
-                            {this.context.confirmedRentals && this.context.confirmedRentals.length > 0 ? this.context.confirmedRentals.map(list => (
+                            {this.state.data.length > 0 ? this.state.data.map(list => (
                                 <Col md={12} sm={12} className="mb-4 pb-2">
                                     <CardItem
                                         title={list.title}
@@ -31,6 +48,8 @@ class ConfirmedRentals extends React.Component {
                                         subTitle={list.areaName}
                                         description={list.description}
                                         isRentButton={false}
+                                        isShowRequestsButton={true}
+                                        isEditButton={true}
                                         imageAlt='Product'
                                         image='img/list/1.png'
                                         imageClass='img-fluid item-img'
@@ -48,7 +67,7 @@ class ConfirmedRentals extends React.Component {
                                     textAlign: 'center',
                                     fontSize: '22px',
                                     marginTop: '30px'
-                                }}>No confirmed rentals were found at the moment</p>}
+                                }}>You didn't post any properties for rental yet</p>}
                         </Col>
                     </Row>
                 </div>
@@ -56,4 +75,4 @@ class ConfirmedRentals extends React.Component {
         );
     }
 }
-export default ConfirmedRentals;
+export default Posts;

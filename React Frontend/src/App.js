@@ -22,15 +22,17 @@ import './App.css';
 // ? admin components
 import AdminLogin from './components/Admin/Login';
 import AdminDashboard from './components/Admin/Dashboard';
+import SellerRegisterForm from './components/SellerRegisterForm';
 
-const PrivateRoute = ({ component: Component, ...rest }) => {
+const SellerRoute = ({ component: Component, ...rest }) => {
   let token = localStorage.getItem('token')
+  let user = localStorage.getItem('user')
 
   return (
     <Route {...rest} render={(props) => (
-      !!token // not undefined
+      !!token && !user.isSeller // logged in and not a seller
         ? <Component {...props} />
-        : <Redirect to='/login' />
+        : <Redirect to='/listing' />
     )} />
   )
 }
@@ -69,6 +71,11 @@ class App extends React.Component {
           <PublicRoute path="/admin/login" exact component={AdminLogin} />
           <AdminRoute path="/admin/dashboard" exact component={AdminDashboard} />
           {/* admin dashboard route */}
+
+          {/* seller dashboard routes */}
+          <SellerRoute path="/myaccount/becomeseller" exact component={SellerRegisterForm} />
+          {/* <SellerRoute path="/myaccount/seller/dashboard" exact component={SellerDashboardHome} /> */}
+          {/* seller dashboard routes */}
 
           {/* regular users login page route */}
           <PublicRoute path="/login" exact component={Login} />

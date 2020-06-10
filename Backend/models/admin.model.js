@@ -4,7 +4,7 @@ const ObjectID = mongoose.Schema.Types.ObjectId
 const moment = require('moment')
 
 const admin = mongoose.Schema({
-    name: {
+    username: {
         type: String,
         required: true
     },

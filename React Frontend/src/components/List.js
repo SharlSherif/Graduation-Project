@@ -251,6 +251,8 @@ class List extends React.Component {
 											if (list.filters.bedrooms == this.state.bedRooms) {
 												return <Col md={12} sm={12} className="mb-4 pb-2">
 													<CardItem
+														isRentButton={true}
+
 														title={list.title}
 														residents={list.residents}
 														subTitle={list.areaName}
@@ -258,7 +260,7 @@ class List extends React.Component {
 														imageAlt='Product'
 														image='img/list/1.png'
 														imageClass='img-fluid item-img'
-														linkUrl={'detail?'+JSON.stringify(list)}
+														linkUrl={'detail?' + JSON.stringify(list)}
 														offerText='65% off | Use Coupon OSAHAN50'
 														time='15–25 min'
 														price={list.price.amount}
@@ -274,6 +276,8 @@ class List extends React.Component {
 											if (list.filters.bathrooms == this.state.bathRooms) {
 												return <Col md={12} sm={12} className="mb-4 pb-2">
 													<CardItem
+														isRentButton={true}
+
 														title={list.title}
 														residents={list.residents}
 														subTitle={list.areaName}
@@ -281,7 +285,7 @@ class List extends React.Component {
 														imageAlt='Product'
 														image='img/list/1.png'
 														imageClass='img-fluid item-img'
-														linkUrl={'detail?'+JSON.stringify(list)}
+														linkUrl={'detail?' + JSON.stringify(list)}
 														offerText='65% off | Use Coupon OSAHAN50'
 														time='15–25 min'
 														price={list.price.amount}
@@ -297,6 +301,7 @@ class List extends React.Component {
 											if (list.filters.isFurnished == this.state.isFurnished) {
 												return <Col md={12} sm={12} className="mb-4 pb-2">
 													<CardItem
+														isRentButton={true}
 														title={list.title}
 														residents={list.residents}
 														subTitle={list.areaName}
@@ -304,7 +309,7 @@ class List extends React.Component {
 														imageAlt='Product'
 														image='img/list/1.png'
 														imageClass='img-fluid item-img'
-														linkUrl={'detail?'+JSON.stringify(list)}
+														linkUrl={'detail?' + JSON.stringify(list)}
 														offerText='65% off | Use Coupon OSAHAN50'
 														time='15–25 min'
 														price={list.price.amount}
@@ -322,6 +327,7 @@ class List extends React.Component {
 												console.log("passed", list)
 												return <Col md={12} sm={12} className="mb-4 pb-2">
 													<CardItem
+														isRentButton={true}
 														title={list.title}
 														residents={list.residents}
 														subTitle={list.areaName}
@@ -329,7 +335,7 @@ class List extends React.Component {
 														imageAlt='Product'
 														image='img/list/1.png'
 														imageClass='img-fluid item-img'
-														linkUrl={'detail?'+JSON.stringify(list)}
+														linkUrl={'detail?' + JSON.stringify(list)}
 														offerText='65% off | Use Coupon OSAHAN50'
 														time='15–25 min'
 														price={list.price.amount}
@@ -346,6 +352,7 @@ class List extends React.Component {
 												console.log("passed", list)
 												return <Col md={12} sm={12} className="mb-4 pb-2">
 													<CardItem
+														isRentButton={true}
 														title={list.title}
 														residents={list.residents}
 														subTitle={list.areaName}
@@ -353,7 +360,7 @@ class List extends React.Component {
 														imageAlt='Product'
 														image='img/list/1.png'
 														imageClass='img-fluid item-img'
-														linkUrl={'detail?'+JSON.stringify(list)}
+														linkUrl={'detail?' + JSON.stringify(list)}
 														offerText='65% off | Use Coupon OSAHAN50'
 														time='15–25 min'
 														price={list.price.amount}
@@ -369,6 +376,7 @@ class List extends React.Component {
 										if (!isFilter) {
 											return <Col md={12} sm={12} className="mb-4 pb-2">
 												<CardItem
+													isRentButton={true}
 													title={list.title}
 													residents={list.residents}
 													subTitle={list.areaName}
@@ -376,7 +384,7 @@ class List extends React.Component {
 													imageAlt='Product'
 													image='img/list/1.png'
 													imageClass='img-fluid item-img'
-													linkUrl={'detail?'+JSON.stringify(list)}
+													linkUrl={'detail?' + JSON.stringify(list)}
 													offerText='65% off | Use Coupon OSAHAN50'
 													time='15–25 min'
 													price={list.price.amount}

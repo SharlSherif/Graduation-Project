@@ -73,8 +73,11 @@ class CardItem extends React.Component {
 							})}
 						</div>
 						<div class="mt-5 buttons">
-							{this.props.isRentButton !== false && <Button variant="outline-secondary" type="button" id="button-1"><Icofont icon="ui-contact-list" /> Rent</Button>}
-							<Button style={{ width: this.props.isRentButton == false && '100%' }} variant="outline-secondary" type="button" id="button-2"><Icofont icon="google-map" /> Location</Button>
+							{this.props.isRentButton == true && <Button variant="outline-secondary" type="button" id="button-1"><Icofont icon="ui-contact-list" /> Rent</Button>}
+							{this.props.isShowRequestsButton == true && <Button variant="outline-secondary" type="button" id="button-1" style={{marginRight:21}}><Icofont icon="list" /> Requests</Button>}
+							{this.props.isEditButton == true && <Button variant="outline-secondary" type="button" id="button-1"><Icofont icon="list" /> Edit</Button>}
+
+							{this.props.isShowRequestsButton !== true && <Button style={{ width: (this.props.isRentButton == false && this.props.isEditButton == false) ? '100%' : '50%' }} variant="outline-secondary" type="button" id="button-2"><Icofont icon="google-map" /> Location</Button>}
 						</div>
 					</div>
 					{/* {this.props.offerText ? (

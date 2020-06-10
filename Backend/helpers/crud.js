@@ -92,10 +92,10 @@ class CRUD {
         })
     }
 
-    static updateOne(schema, where, updates) {
+    static updateOne(schema, where, updates, options = {}) {
         return new Promise((resolve, reject) => {
             schema
-                .updateOne(where, updates)
+                .updateOne(where, updates, options)
                 .then(data => {
                     if (data.n == 0) {
                         reject(responseObject(false, data, 'no such records'))

@@ -11,6 +11,7 @@ import Addresses from './myaccount/Addresses';
 import EditProfileModal from './modals/EditProfileModal';
 import RentalRequests from './myaccount/RentalRequests'
 import Settings from './myaccount/settings';
+import Posts from './myaccount/Posts';
 import ConfirmedRentals from './myaccount/ConfirmedRentals';
 import Context from './context'
 class MyAccount extends React.Component {
@@ -19,7 +20,7 @@ class MyAccount extends React.Component {
 
       this.state = {
          user: localStorage.user && JSON.parse(localStorage.user),
-         data:{},
+         data: {},
          showEditProfile: false
       };
    }
@@ -66,7 +67,12 @@ class MyAccount extends React.Component {
                                        {this.state.user.isSeller && <div>
                                           <p>SELLER <img style={{ width: 24 }} src="https://img.icons8.com/cotton/64/000000/checkmark.png" /></p>
                                        </div>}
-                                       <Button style={{ width: '80%', fontSize: 13 }} variant="outline-success" type="button" id="button-2"><Icofont icon="list" /> APPLY FOR SELLING</Button>
+                                       {!this.state.user.isSeller && this.state.user.status !== "pending" &&
+                                          <Button onClick={() => window.location = "/myaccount/becomeseller"} style={{ width: '80%', fontSize: 13 }} variant="outline-success" type="button" id="button-2"><Icofont icon="list" /> APPLY FOR SELLING</Button>
+                                       }
+                                       {this.state.user.status == "pending" && 
+                                          <Button onClick={() => window.location = "/myaccount/becomeseller"} style={{ width: '80%', fontSize: 13 }} variant="outline-secondary" disabled type="button" id="button-2"><Icofont icon="list" /> Pending </Button>
+                                       }
                                     </div>
                                  </div>
                               </div>
@@ -79,6 +85,9 @@ class MyAccount extends React.Component {
                                  <NavLink className="nav-link" activeClassName="active" exact to="/myaccount/rentals"><i className="icofont-sale-discount"></i> Confirmed Rentals</NavLink>
                               </li>
                               <li className="nav-item">
+                                 <NavLink className="nav-link" activeClassName="active" exact to="/myaccount/posts"><i className="icofont-heart"></i> Posts</NavLink>
+                              </li>
+                              <li className="nav-item">
                                  <NavLink className="nav-link" activeClassName="active" exact to="/myaccount/settings"><i className="icofont-heart"></i> Settings</NavLink>
                               </li>
                            </ul>
@@ -88,6 +97,9 @@ class MyAccount extends React.Component {
                         <Switch>
                            <Route path="/myaccount/requests" exact component={RentalRequests} />
                            <Route path="/myaccount/rentals" exact component={ConfirmedRentals} />
+                           <Route path="/myaccount/posts" exact component={Posts} />
+                           <Route path="/myaccount/settings" exact component={Settings} />
+                           <Route path="/myaccount/settings" exact component={Settings} />
                            <Route path="/myaccount/settings" exact component={Settings} />
                         </Switch>
                      </Col>

@@ -9,6 +9,15 @@ const place = mongoose.Schema({
         type: ObjectID,
         ref: 'User'
     }],
+    rentalRequests: [{ //? request for rental (NEEDS CONFIRMATION)
+        type: ObjectID,
+        ref: 'User',
+    }],
+    // ? the seller who posted this place
+    author: {
+        type: ObjectID,
+        ref: 'User'
+    },
     title: {
         type: String,
         required: true

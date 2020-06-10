@@ -46,7 +46,7 @@ class UserController {
         let address = req.body.address;
         let socialLink = req.body.socialLink
 
-        await CRUD.updateOne(User, { _id: req.user._id }, { $set: { socialLink, address, status: statusTypes[1] } })
+        await CRUD.updateOne(User, { _id: req.user._id }, { $set: { socialLink, address, status: statusTypes[1] } }, { new: true })
             .then(response => {
                 res.status(201).send(response)
             })
@@ -68,13 +68,24 @@ class UserController {
 
     static async rentalRequest(req, res) {
         let placeID = req.params.id
-        await CRUD.updateOne(User, { _id: req.user._id }, { $push: { placesFK: placeID } })
+        let renterID = req.user._id // current user id
+        let place = await CRUD.getOne(Place, false, { _id: placeID })
+        // the user must not be a current renter or has sent a rental request before
+        if (
+            !!place.data
+            && place.data.renters.indexOf(renterID) == -1
+            && place.data.rentalRequests.indexOf(renterID) == -1
+        ) {
+            await CRUD.updateOne(Place, { _id: placeID }, { $push: { rentalRequests: req.user._id } })
             .then(response => {
                 res.status(201).send(response)
             })
             .catch(err => {
                 res.status(400).send(err)
             })
+        }else {
+            res.status(403).send({success:false, data:{}, message:"User has already sent a rental request or has already rented this place"})
+        }
     }
 
     static async delete(req, res) {

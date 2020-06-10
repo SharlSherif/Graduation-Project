@@ -80,7 +80,7 @@ class Dashboard extends React.Component {
                                                     There are no requests at the moment
 	                  </Alert>}
                                             {this.state.requests.map(request =>
-                                                <div class="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm" style={{ padding: '30px', marginTop:'15px' }}>
+                                                <div class="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm" style={{ padding: '30px', marginTop: '15px' }}>
                                                     <div class="position-relative" style={{ width: '100%' }}>
                                                         <div class="list-card-body">
                                                             <h6 class="mb-1">
@@ -88,7 +88,7 @@ class Dashboard extends React.Component {
                                                                     {/* {request.phone} */}
                                                                 </span></p>
                                                             </h6>
-                                                            <p class="text-gray mb-3" style={{ fontSize: '1rem' }}><i class="icofont-location-pin"></i>{request.address}</p>
+                                                            <p class="text-gray mb-3" style={{ fontSize: '1rem' }}><i class="icofont-location-pin"></i>{request.address.length < 1 ? "Not provided" : request.address}</p>
                                                             <p class="text-gray mb-3" style={{ fontSize: '1rem' }}><i class="icofont-phone"></i>{request.phone}</p>
                                                             <a href={request.socialLink} target="_"><i class="icofont-link" style={{ fontSize: '1rem' }}></i>{request.socialLink}</a>
                                                             <div class="mt-5 buttons">
