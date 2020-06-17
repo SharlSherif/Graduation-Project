@@ -22,11 +22,6 @@ const User = mongoose.Schema({
         type: String,
         required: true
     },
-    // type: {
-    //     type: String,
-    //     enum: UserTypes,
-    //     default: UserTypes[0] // employee
-    // },
     isCustomer: {
         type: Boolean,
         default: false

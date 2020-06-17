@@ -25,7 +25,7 @@ const place = mongoose.Schema({
     type: {
         type: String,
         enum: customerTypes,
-        default: customerTypes[0] // employee
+        default: "employee" // employee
     },
     description: {
         type: String,

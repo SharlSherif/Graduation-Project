@@ -23,6 +23,9 @@ import './App.css';
 import AdminLogin from './components/Admin/Login';
 import AdminDashboard from './components/Admin/Dashboard';
 import SellerRegisterForm from './components/SellerRegisterForm';
+import SellerPlaceRequests from './components/myaccount/SellerPlaceRequests'
+import SellerAddPlace from './components/myaccount/SellerAddPlace';
+import SellerEditPlace from './components/myaccount/SellerEditPlace';
 
 const SellerRoute = ({ component: Component, ...rest }) => {
   let token = localStorage.getItem('token')
@@ -74,6 +77,9 @@ class App extends React.Component {
 
           {/* seller dashboard routes */}
           <SellerRoute path="/myaccount/becomeseller" exact component={SellerRegisterForm} />
+          <SellerRoute path="/myaccount/seller/requests/" exact component={SellerPlaceRequests} />
+          <SellerRoute path="/myaccount/seller/addplace/" exact component={SellerAddPlace} />
+          <SellerRoute path="/myaccount/seller/edit/" exact component={SellerEditPlace} />
           {/* <SellerRoute path="/myaccount/seller/dashboard" exact component={SellerDashboardHome} /> */}
           {/* seller dashboard routes */}
 

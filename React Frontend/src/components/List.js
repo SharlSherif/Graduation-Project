@@ -47,8 +47,8 @@ class List extends React.Component {
 			isAdded.push(x.areaName)
 			return <Form.Check
 				onClick={e => {
-					this.setState({ isFiltering: true })
-					this.filter('areaName', x.areaName, false)
+					this.setState({ area: x.areaName })
+					// this.filter('areaName', x.areaName, false)
 				}}
 				custom
 				type='radio'
@@ -122,6 +122,7 @@ class List extends React.Component {
 															defaultChecked={true}
 															id='default-areaName00'
 															name='areaName'
+															onClick={() => this.setState({ area: 'All' })}
 															label={<React.Fragment>All <small className="text-black-50"> {this.state.listing.length}</small></React.Fragment>}
 														/>
 														{this.get_AreaNames()}
@@ -244,80 +245,53 @@ class List extends React.Component {
 							</Col>
 							<Col md={9}>
 								<Row>
-									{this.state.listing.map(list => {
+									{this.state.listing.reverse().map(list => {
+										let Tile = <Col md={12} sm={12} className="mb-4 pb-2">
+											<CardItem
+												id={list._id}
+												isRentButton={true}
+												author={list.author}
+												date={list.createdAt}
+												title={list.title}
+												residents={list.residents}
+												subTitle={list.areaName}
+												description={list.description}
+												imageAlt='Product'
+												image='img/list/1.png'
+												imageClass='img-fluid item-img'
+												
+												offerText='65% off | Use Coupon OSAHAN50'
+												time='15–25 min'
+												price={list.price}
+												isAvailable={list.isAvailable}
+												promotedVariant='dark'
+												favIcoIconColor='text-danger'
+											/>
+										</Col>
 										let isFilter = false
+										if (this.state.area !== 'All') {
+											isFilter = true
+											if (this.state.area == list.areaName) {
+												console.log("passed", list)
+												return Tile
+											}
+										}
 										if (this.state.bedRooms !== 'All') {
 											isFilter = true
 											if (list.filters.bedrooms == this.state.bedRooms) {
-												return <Col md={12} sm={12} className="mb-4 pb-2">
-													<CardItem
-														isRentButton={true}
-
-														title={list.title}
-														residents={list.residents}
-														subTitle={list.areaName}
-														description={list.description}
-														imageAlt='Product'
-														image='img/list/1.png'
-														imageClass='img-fluid item-img'
-														linkUrl={'detail?' + JSON.stringify(list)}
-														offerText='65% off | Use Coupon OSAHAN50'
-														time='15–25 min'
-														price={list.price.amount}
-														isAvailable={list.isAvailable}
-														promotedVariant='dark'
-														favIcoIconColor='text-danger'
-													/>
-												</Col>
+												return Tile
 											}
 										}
 										if (this.state.bathRooms !== 'All') {
 											isFilter = true
 											if (list.filters.bathrooms == this.state.bathRooms) {
-												return <Col md={12} sm={12} className="mb-4 pb-2">
-													<CardItem
-														isRentButton={true}
-
-														title={list.title}
-														residents={list.residents}
-														subTitle={list.areaName}
-														description={list.description}
-														imageAlt='Product'
-														image='img/list/1.png'
-														imageClass='img-fluid item-img'
-														linkUrl={'detail?' + JSON.stringify(list)}
-														offerText='65% off | Use Coupon OSAHAN50'
-														time='15–25 min'
-														price={list.price.amount}
-														isAvailable={list.isAvailable}
-														promotedVariant='dark'
-														favIcoIconColor='text-danger'
-													/>
-												</Col>
+												return Tile
 											}
 										}
 										if (this.state.isFurnished !== 'All') {
 											isFilter = true
 											if (list.filters.isFurnished == this.state.isFurnished) {
-												return <Col md={12} sm={12} className="mb-4 pb-2">
-													<CardItem
-														isRentButton={true}
-														title={list.title}
-														residents={list.residents}
-														subTitle={list.areaName}
-														description={list.description}
-														imageAlt='Product'
-														image='img/list/1.png'
-														imageClass='img-fluid item-img'
-														linkUrl={'detail?' + JSON.stringify(list)}
-														offerText='65% off | Use Coupon OSAHAN50'
-														time='15–25 min'
-														price={list.price.amount}
-														isAvailable={list.isAvailable}
-														promotedVariant='dark'
-														favIcoIconColor='text-danger'
-													/>
-												</Col>
+												return Tile
 											}
 										}
 										// user wants to filter by areaM2 as long as its not 0
@@ -325,74 +299,20 @@ class List extends React.Component {
 											isFilter = true
 											if (list.filters.areaM2 >= this.state.areaM2.from && list.filters.areaM2 <= this.state.areaM2.to) {
 												console.log("passed", list)
-												return <Col md={12} sm={12} className="mb-4 pb-2">
-													<CardItem
-														isRentButton={true}
-														title={list.title}
-														residents={list.residents}
-														subTitle={list.areaName}
-														description={list.description}
-														imageAlt='Product'
-														image='img/list/1.png'
-														imageClass='img-fluid item-img'
-														linkUrl={'detail?' + JSON.stringify(list)}
-														offerText='65% off | Use Coupon OSAHAN50'
-														time='15–25 min'
-														price={list.price.amount}
-														isAvailable={list.isAvailable}
-														promotedVariant='dark'
-														favIcoIconColor='text-danger'
-													/>
-												</Col>
+												return Tile
 											}
 										}
 										if (this.state.price.from !== 0 && this.state.price.to !== 0) {
 											isFilter = true
 											if (list.price.amount >= this.state.price.from && list.price.amount <= this.state.price.to) {
 												console.log("passed", list)
-												return <Col md={12} sm={12} className="mb-4 pb-2">
-													<CardItem
-														isRentButton={true}
-														title={list.title}
-														residents={list.residents}
-														subTitle={list.areaName}
-														description={list.description}
-														imageAlt='Product'
-														image='img/list/1.png'
-														imageClass='img-fluid item-img'
-														linkUrl={'detail?' + JSON.stringify(list)}
-														offerText='65% off | Use Coupon OSAHAN50'
-														time='15–25 min'
-														price={list.price.amount}
-														isAvailable={list.isAvailable}
-														promotedVariant='dark'
-														favIcoIconColor='text-danger'
-													/>
-												</Col>
+												return Tile
 											}
 										}
 
 										// no filters are declared, just return the listing item
 										if (!isFilter) {
-											return <Col md={12} sm={12} className="mb-4 pb-2">
-												<CardItem
-													isRentButton={true}
-													title={list.title}
-													residents={list.residents}
-													subTitle={list.areaName}
-													description={list.description}
-													imageAlt='Product'
-													image='img/list/1.png'
-													imageClass='img-fluid item-img'
-													linkUrl={'detail?' + JSON.stringify(list)}
-													offerText='65% off | Use Coupon OSAHAN50'
-													time='15–25 min'
-													price={list.price.amount}
-													isAvailable={list.isAvailable}
-													promotedVariant='dark'
-													favIcoIconColor='text-danger'
-												/>
-											</Col>
+											return Tile
 										}
 
 									})}

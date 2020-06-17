@@ -11,6 +11,9 @@ router.post(
 
 router.get('/', PlaceController.getData);
 
+// get place by id
+router.get('/:id', PlaceController.getOne);
+
 // ? fetch rental requests on the seller dashboard
 router.get('/seller/requests',
     (req, res, next) => authenticate(req, res, next, false, true), // must be seller

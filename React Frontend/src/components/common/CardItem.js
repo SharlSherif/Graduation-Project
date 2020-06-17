@@ -3,8 +3,36 @@ import { Link } from 'react-router-dom';
 import { Image, Badge, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import Icofont from 'react-icofont';
+import moment from 'moment';
 
 class CardItem extends React.Component {
+	state = {
+		message: ""
+	}
+
+	remove = async () => {
+		let url = 'http://localhost:4000/api/place/' + this.props.id
+		await fetch(url, {
+			method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
+			cache: "no-cache",
+			credentials: 'same-origin', // include, *same-origin, omit
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': localStorage.token
+			}
+		})
+			.then(response => response.json())
+			.then(json => {
+				if (json.success) {
+					this.setState({ message: `"${this.props.title}" has been removed successfully!` })
+					setTimeout(() => {
+						window.location.reload()
+					}, 1000);
+				}
+				console.log(json)
+			})
+			.catch(err => console.log(err))
+	}
 	render() {
 		let residents_available = []
 		let residents_current = []
@@ -16,9 +44,10 @@ class CardItem extends React.Component {
 			residents_available.push(0)
 		}
 		return (
-			<div className="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm">
-				<div className="list-card-image">
-					{/* {this.props.rating ? (
+			<>
+				<div className="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm">
+					<div className="list-card-image">
+						{/* {this.props.rating ? (
 						<div className="star position-absolute">
 							<Badge variant="success">
 								<Icofont icon='star' /> {this.props.rating}
@@ -27,68 +56,83 @@ class CardItem extends React.Component {
 					)
 						: ""
 					} */}
-					{/* <div className={`favourite-heart position-absolute ${this.props.favIcoIconColor}`}>
+						{/* <div className={`favourite-heart position-absolute ${this.props.favIcoIconColor}`}>
 						<Link to={this.props.linkUrl}>
 							<Icofont icon='heart' />
 						</Link>
 					</div> */}
-					{!this.props.isAvailable ? (
-						<div className="member-plan position-absolute">
-							<Badge variant={this.props.promotedVariant}>Unavailable</Badge>
-						</div>
-					)
-						: ""
-					}
-					<Link to={this.props.linkUrl}>
-						<Image src={this.props.image} className={this.props.imageClass} alt={this.props.imageAlt} />
-					</Link>
-				</div>
-				<div className="p-3 position-relative">
-					<div className="list-card-body">
-
-						<h6 className="mb-1">
-							<p className="text-gray mb-3 time">
-								<Link to={this.props.linkUrl} className="text-black">{this.props.title}</Link>
-								{this.props.price ? (
-									<span className="float-right text-black-50">{this.props.price} EGP/Month</span>
-								)
-									: ""
-								}
-							</p>
-						</h6>
-						{this.props.subTitle ? (
-							<p className="text-gray mb-3">{this.props.subTitle}</p>
+						{!this.props.isAvailable ? (
+							<div className="member-plan position-absolute">
+								<Badge variant={this.props.promotedVariant}>Unavailable</Badge>
+							</div>
 						)
-							: ''
+							: ""
 						}
-						<p>
-							{this.props.description}
-						</p>
-						<div class="available-slots">
-							{residents_current.map(x => {
-								return <img class="user-icon" src="img/user-black.svg" />
-							})}
-							{residents_available.map(x => {
-								return <img class="user-icon" src="img/user-white.svg" />
-							})}
-						</div>
-						<div class="mt-5 buttons">
-							{this.props.isRentButton == true && <Button variant="outline-secondary" type="button" id="button-1"><Icofont icon="ui-contact-list" /> Rent</Button>}
-							{this.props.isShowRequestsButton == true && <Button variant="outline-secondary" type="button" id="button-1" style={{marginRight:21}}><Icofont icon="list" /> Requests</Button>}
-							{this.props.isEditButton == true && <Button variant="outline-secondary" type="button" id="button-1"><Icofont icon="list" /> Edit</Button>}
-
-							{this.props.isShowRequestsButton !== true && <Button style={{ width: (this.props.isRentButton == false && this.props.isEditButton == false) ? '100%' : '50%' }} variant="outline-secondary" type="button" id="button-2"><Icofont icon="google-map" /> Location</Button>}
-						</div>
+						<Link to={`/detail?${this.props.id}`}>
+							<Image src={this.props.image} className={this.props.imageClass} alt={this.props.imageAlt} />
+						</Link>
 					</div>
-					{/* {this.props.offerText ? (
+					<div className="p-3 position-relative">
+						<div className="list-card-body">
+
+							<h6 className="mb-1">
+								<p className="text-gray mb-3 time">
+									<Link to={this.props.linkUrl} className="text-black">{this.props.title}</Link>
+									{this.props.price ? (
+										<span className="float-right text-black-50">{this.props.price.amount} {this.props.price.currency}/Month</span>
+									)
+										: ""
+									}
+								</p>
+							</h6>
+							{this.props.subTitle ? (
+								<p className="text-gray mb-3">{this.props.subTitle}</p>
+							)
+								: ''
+							}
+							<p>
+								{this.props.description}
+							</p>
+							<div class="available-slots">
+								{residents_current.map(x => {
+									return <img class="user-icon" src="img/user-black.svg" />
+								})}
+								{residents_available.map(x => {
+									return <img class="user-icon" src="img/user-white.svg" />
+								})}
+							</div>
+
+							<div class="buttons">
+								<div class="mt-3 mb-3">
+									<Icofont icon="clock-time" />   {`  ${this.props.date}`}
+									<br />
+									<p style={{ color: 'black' }}><Icofont icon="icofont-user-alt-7" />{`  ${this.props.author.username}`}</p>
+								</div>
+								{this.props.isRentButton == true && <Button variant="outline-secondary" type="button" id="button-1"><Icofont icon="ui-contact-list" /> Rent</Button>}
+								{this.props.isShowRequestsButton == true && <Button variant="outline-info" onClick={() => window.location = '/myaccount/seller/requests/?' + this.props.id} type="button" id="button-1" style={{ marginRight: '2%', width: '49%' }}><Icofont icon="list" /> Requests ({this.props.rentalRequestsLength})</Button>}
+								{this.props.isEditButton == true && <Button variant="outline-secondary" type="button" id="button-1" style={{ width: '49%' }} onClick={() => window.location = '/myaccount/seller/edit/?' + this.props.id}><Icofont icon="list" /> Edit</Button>}
+								{this.props.isDeleteButton == true && <Button variant="outline-danger" onClick={this.remove} type="button" id="button-1" style={{ marginTop: 5, width: '100%' }}><Icofont icon="icofont-ui-delete" /> Remove</Button>}
+
+								{this.props.isShowRequestsButton !== true && <Button style={{ width: (this.props.isRentButton == false && this.props.isEditButton == false) ? '100%' : '50%' }} variant="outline-secondary" type="button" id="button-2"><Icofont icon="google-map" /> Location</Button>}
+							</div>
+						</div>
+
+						{/* {this.props.offerText ? (
 						<div className="list-card-badge">
 							<Badge variant={this.props.offerColor}>OFFER</Badge> <small>{this.props.offerText}</small>
 						</div>
 					)
 						: ""
 					} */}
+					</div>
+
 				</div>
-			</div>
+				{this.state.message.length > 0 &&
+					<div className="alert alert-success" role="alert">
+						{this.state.message}
+					</div>
+				}
+			</>
 		);
 	}
 }

@@ -34,7 +34,7 @@ class UserController {
         try {
             let userResponse = await CRUD.getOne(User, 'placesFK', { _id: req.user._id })
             let rentalRequests = userResponse.data.placesFK
-            let userConfirmedRentalsResponse = await CRUD.getData(Place, true, { renters: req.user._id })
+            let userConfirmedRentalsResponse = await CRUD.getData(Place, true, [], { renters: req.user._id })
             let confirmedRentals = userConfirmedRentalsResponse.data
             res.status(200).send({ confirmedRentals, rentalRequests })
         } catch (e) {
@@ -77,14 +77,14 @@ class UserController {
             && place.data.rentalRequests.indexOf(renterID) == -1
         ) {
             await CRUD.updateOne(Place, { _id: placeID }, { $push: { rentalRequests: req.user._id } })
-            .then(response => {
-                res.status(201).send(response)
-            })
-            .catch(err => {
-                res.status(400).send(err)
-            })
-        }else {
-            res.status(403).send({success:false, data:{}, message:"User has already sent a rental request or has already rented this place"})
+                .then(response => {
+                    res.status(201).send(response)
+                })
+                .catch(err => {
+                    res.status(400).send(err)
+                })
+        } else {
+            res.status(403).send({ success: false, data: {}, message: "User has already sent a rental request or has already rented this place" })
         }
     }
 

@@ -4,7 +4,7 @@ const User = require('../models/user.model')
 
 class PlaceController {
     static async getData(req, res) {
-        await CRUD.getData(Place, false) // autopopulate off
+        await CRUD.getData(Place, true, ['author']) // autopopulate off
             .then(async response => {
                 res.status(201).send(response)
             })
@@ -17,7 +17,7 @@ class PlaceController {
     static async getOne(req, res) {
         let id = req.params.id;
 
-        await CRUD.getOne(Place, false, { _id: id }) // autopopulate off
+        await CRUD.getOne(Place, ['author','rentalRequests', 'renters'], { _id: id })
             .then(async response => {
                 if (!response.success) {
                     return res.status(404).send(response)
@@ -45,7 +45,7 @@ class PlaceController {
     static async SellerPosts(req, res) {
         let SellerID = req.user._id;
 
-        await CRUD.getData(Place, true, { author: SellerID })
+        await CRUD.getData(Place, true, ['author'], { author: SellerID })
             .then(response => {
                 res.status(201).send(response)
             })
@@ -57,7 +57,7 @@ class PlaceController {
     static async SellerRentalRequests(req, res) {
         let SellerID = req.user._id;
         // ? all places posted by the seller
-        let response = await Place.find({author: SellerID}).populate(['rentalRequests', 'renters']).exec()
+        let response = await Place.find({ author: SellerID }).populate(['author','rentalRequests', 'renters']).exec()
         // let response = await CRUD.getData(Place, true, { author: SellerID })
         console.log(response)
         res.status(200).send(response)
@@ -65,18 +65,33 @@ class PlaceController {
 
 
     static async confirmRental(req, res) {
-        console.log(req.body)
-        let { placeID, userID } = req.body;
-        await CRUD.updateOne(Place, { _id: placeID }, { $push: { renters: userID }, $pull: { rentalRequests: userID }, $inc: { 'residents.current': 1 } })
-            .then(async response => {
-                // await CRUD.updateOne(Place, { _id: placeID }, { $pull: { placesFK: placeID } })
-                //     .then(async () => {
-                res.status(201).send(response)
-                // })
-            })
-            .catch(err => {
-                res.status(400).send(err)
-            })
+        // decision can be true or false
+        // incase its false, delete the request from the place object
+        let { placeID, userID, decision } = req.body;
+        if (decision == true) {
+            await CRUD.updateOne(Place, { _id: placeID }, { $push: { renters: userID }, $pull: { rentalRequests: userID }, $inc: { 'residents.current': 1 } })
+                .then(async response => {
+                    // await CRUD.updateOne(Place, { _id: placeID }, { $pull: { placesFK: placeID } })
+                    //     .then(async () => {
+                    res.status(201).send(response)
+                    // })
+                })
+                .catch(err => {
+                    res.status(400).send(err)
+                })
+        } else {
+            await CRUD.updateOne(Place, { _id: placeID }, { $pull: { rentalRequests: userID } })
+                .then(async response => {
+                    // await CRUD.updateOne(Place, { _id: placeID }, { $pull: { placesFK: placeID } })
+                    //     .then(async () => {
+                    res.status(201).send(response)
+                    // })
+                })
+                .catch(err => {
+                    res.status(400).send(err)
+                })
+        }
+
     }
 
     static async update(req, res) {

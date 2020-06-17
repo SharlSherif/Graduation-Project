@@ -23,7 +23,7 @@ class ConfirmedRentals extends React.Component {
                         </Col>
                         <Col md={12} sm={12} className="mb-4 pb-2">
 
-                            {this.context.confirmedRentals && this.context.confirmedRentals.length > 0 ? this.context.confirmedRentals.map(list => (
+                            {this.context.confirmedRentals && this.context.confirmedRentals.length > 0 ? this.context.confirmedRentals.reverse().map(list => (
                                 <Col md={12} sm={12} className="mb-4 pb-2">
                                     <CardItem
                                         title={list.title}
@@ -34,7 +34,7 @@ class ConfirmedRentals extends React.Component {
                                         imageAlt='Product'
                                         image='img/list/1.png'
                                         imageClass='img-fluid item-img'
-                                        linkUrl={'/detail?' + JSON.stringify(list)}
+                                        
                                         offerText='65% off | Use Coupon OSAHAN50'
                                         time='15–25 min'
                                         price={list.price.amount}

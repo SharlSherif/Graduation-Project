@@ -40,23 +40,41 @@ class Detail extends React.Component {
 		};
 	}
 
-	componentDidMount() {
-		if (window.location.search.length < 1) {
-			window.location = '/listing'
-			return
-		}
+	async componentDidMount() {
+		// if (window.location.search.length < 1) {
+		// 	window.location = '/listing'
+		// 	return
+		// }
+		let url = 'http://localhost:4000/api/place/' + window.location.search.replace("?", "")
+		await fetch(url, {
+			method: 'GET', // *GET, POST, PUT, DELETE, etc.
+			cache: "no-cache",
+			credentials: 'same-origin', // include, *same-origin, omit
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': localStorage.token
+			}
+		})
+			.then(response => response.json())
+			.then(json => {
+				if (json.success) {
+					let details = json.data
+					let residents_available = []
+					let residents_current = []
+					let diff = details.residents.maximum - details.residents.current
+					for (let i = 0; i < details.residents.maximum - diff; i++) {
+						residents_current.push(0)
+					}
+					for (let i = 0; i < diff; i++) {
+						residents_available.push(0)
+					}
+					this.setState({ details, residents_available, residents_current })
+				}
+				console.log(json)
+			})
+			.catch(err => console.log(err))
+		// let details = JSON.parse(window.location.search.replace("?", "").replace(/%20/g, ' ').replace(/%22/g, '"'))
 
-		let details = JSON.parse(window.location.search.replace("?", "").replace(/%20/g, ' ').replace(/%22/g, '"'))
-		let residents_available = []
-		let residents_current = []
-		let diff = details.residents.maximum - details.residents.current
-		for (let i = 0; i < details.residents.maximum - diff; i++) {
-			residents_current.push(0)
-		}
-		for (let i = 0; i < diff; i++) {
-			residents_available.push(0)
-		}
-		this.setState({ details, residents_available, residents_current })
 	}
 
 	render() {

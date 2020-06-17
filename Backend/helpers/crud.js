@@ -17,7 +17,7 @@ class CRUD {
         })
     }
     // get data
-    static getData(schema, autopopulate = false, where = {}, display = {}) {
+    static getData(schema, autopopulate = false, populateFields='', where = {}, display = {}) {
         return new Promise((resolve, reject) => {
             // condition of find
             where = {
@@ -35,6 +35,7 @@ class CRUD {
                 .find(where, _display, {
                     autopopulate
                 })
+                .populate(populateFields)
                 .then(data => {
                     resolve(
                         responseObject(

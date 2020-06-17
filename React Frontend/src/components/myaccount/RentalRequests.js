@@ -30,7 +30,7 @@ class RentalRequests extends React.Component {
                                         imageAlt='Product'
                                         image='img/list/1.png'
                                         imageClass='img-fluid item-img'
-                                        linkUrl={'/detail?' + JSON.stringify(list)}
+                                        
                                         offerText='65% off | Use Coupon OSAHAN50'
                                         time='15–25 min'
                                         price={list.price.amount}

@@ -63,12 +63,6 @@ class Header extends React.Component {
 											<Nav.Link eventKey={0} to="/myaccount/requests" as={NavLink} exact>
 												My Account
 							</Nav.Link>
-											{JSON.parse(localStorage.user).isSeller &&
-												<Nav.Link eventKey={0} to="/myaccount/seller/dashboard" as={NavLink} exact>
-													Seller Dashboard
-</Nav.Link>
-											}
-
 											<Nav.Link eventKey={0} onClick={this.logout} as={NavLink} exact style={{ color: '#b8341b' }}>
 												Logout
 							</Nav.Link>
