@@ -17,7 +17,7 @@ class PlaceController {
     static async getOne(req, res) {
         let id = req.params.id;
 
-        await CRUD.getOne(Place, ['author','rentalRequests', 'renters'], { _id: id })
+        await CRUD.getOne(Place, ['author', 'rentalRequests.renterID', 'renters'], { _id: id })
             .then(async response => {
                 if (!response.success) {
                     return res.status(404).send(response)
@@ -54,22 +54,24 @@ class PlaceController {
             })
     }
 
-    static async SellerRentalRequests(req, res) {
-        let SellerID = req.user._id;
-        // ? all places posted by the seller
-        let response = await Place.find({ author: SellerID }).populate(['author','rentalRequests', 'renters']).exec()
-        // let response = await CRUD.getData(Place, true, { author: SellerID })
-        console.log(response)
-        res.status(200).send(response)
-    }
+    //! deprecated
+    // static async SellerRentalRequests(req, res) {
+    //     let SellerID = req.user._id;
+    //     // ? all places posted by the seller
+    //     let response = await Place.find({ author: SellerID }).populate(['author',{rentalRequests:'renterID'}, 'renters']).exec()
+    //     // let response = await CRUD.getData(Place, true, { author: SellerID })
+    //     console.log(response)
+    //     res.status(200).send(response)
+    // }
 
 
     static async confirmRental(req, res) {
         // decision can be true or false
         // incase its false, delete the request from the place object
         let { placeID, userID, decision } = req.body;
+        console.log(req.body)
         if (decision == true) {
-            await CRUD.updateOne(Place, { _id: placeID }, { $push: { renters: userID }, $pull: { rentalRequests: userID }, $inc: { 'residents.current': 1 } })
+            await CRUD.updateOne(Place, { _id: placeID }, { $push: { renters: userID }, $pull: { rentalRequests: { renterID: userID } }, $inc: { 'residents.current': 1 } })
                 .then(async response => {
                     // await CRUD.updateOne(Place, { _id: placeID }, { $pull: { placesFK: placeID } })
                     //     .then(async () => {

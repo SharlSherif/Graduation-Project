@@ -46,7 +46,7 @@ class Posts extends React.Component {
                                     <h4 className="font-weight-bold mt-0 mb-3">Properties</h4>
                                 </Col>
                                 <Col md={3}>
-                                    <Button style={{ float: 'right' }} onClick={()=>window.location = "/myaccount/seller/addplace"} variant="outline-success" type="button" id="button-2"><Icofont icon="plus" /> Add Property</Button>
+                                    <Button style={{ float: 'right' }} onClick={() => window.location = "/myaccount/seller/addplace"} variant="outline-success" type="button" id="button-2"><Icofont icon="plus" /> Add Property</Button>
                                 </Col>
                             </Row>
 
@@ -55,14 +55,7 @@ class Posts extends React.Component {
                             {this.state.data.length > 0 ? this.state.data.map(list => (
                                 <Col md={12} sm={12} className="mb-4 pb-2">
                                     <CardItem
-                                        id={list._id}
-                                        author={list.author}
-                                        date={list.createdAt}
-                                        title={list.title}
-                                        residents={list.residents}
-                                        subTitle={list.areaName}
-                                        description={list.description}
-                                        rentalRequestsLength={list.rentalRequests.length}
+                                        list={list}
                                         isDeleteButton={true}
                                         isRentButton={false}
                                         isShowRequestsButton={true}
@@ -70,11 +63,6 @@ class Posts extends React.Component {
                                         imageAlt='Product'
                                         image='img/list/1.png'
                                         imageClass='img-fluid item-img'
-                                        
-                                        offerText='65% off | Use Coupon OSAHAN50'
-                                        time='15–25 min'
-                                        price={list.price}
-                                        isAvailable={list.isAvailable}
                                         promotedVariant='dark'
                                         favIcoIconColor='text-danger'
                                     />

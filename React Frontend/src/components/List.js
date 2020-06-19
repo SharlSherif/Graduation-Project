@@ -6,6 +6,109 @@ import PageTitle from './common/PageTitle';
 import CardItem from './common/CardItem';
 import CategoriesCarousel from './common/CategoriesCarousel';
 import TopSearch from './home/TopSearch'
+
+import { InputGroup, Modal, Alert, ButtonToolbar, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
+
+class RentRequestModal extends React.Component {
+	state = {
+		currentUser: localStorage.token ? JSON.parse(localStorage.user) : null,
+		author: this.props.place.author,
+		displayWarning: false,
+		message: ""
+	}
+	componentDidMount() {
+		let { currentUser, author } = this.state;
+
+		// user is not logged in
+		if (!currentUser) {
+			window.location = '/register'
+			return
+		}
+
+		if (author._id.toString() == currentUser._id.toString()) {
+			this.setState({ displayWarning: true })
+		}
+
+	}
+
+	requestRental = async () => {
+		let url = 'http://localhost:4000/api/user/rent/request/'
+		if (this.state.message.length < 10) {
+			return;
+		}
+		await fetch(url, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': localStorage.token
+			},
+			body: JSON.stringify({
+				placeID: this.props.place._id,
+				message: this.state.message
+			})
+		})
+			.then((response) => { console.log(response); return response.json(); })
+			.then((res) => {
+
+				console.log(res)
+				if (res.success) {
+					this.props.onHide();
+				}
+			})
+			.catch((error) => {
+				this.setState({
+					error: true,
+				})
+				console.error('Error:', error);
+			});
+	}
+	render() {
+		console.log("MODAL ", this.props)
+		return (
+			<Modal
+				show={this.props.show}
+				onHide={this.props.onHide}
+				centered
+			>
+				<Modal.Header closeButton={true}>
+					<Modal.Title as='h5' id="add-address">Rental Request for "{this.props.place && this.props.place.title}"
+					</Modal.Title>
+				</Modal.Header>
+				{this.state.displayWarning ?
+					<Alert className="alert alert-danger" role="alert" style={{ textAlign: 'center', margin: '15px' }}>
+						You cannot rent your own property!
+					</Alert>
+					:
+					<>
+						<Modal.Body>
+							<Form>
+								<div className="form-row">
+									<Form.Group className="col-md-12">
+										<Form.Label>Message</Form.Label>
+										<InputGroup>
+											<textarea class="form-control" type="text" onChange={e => this.setState({ message: e.target.value })} placeholder="eg. I'm interested in renting this property, can we arrange a meeting over the phone?" ></textarea>
+										</InputGroup>
+									</Form.Group>
+								</div>
+							</Form>
+						</Modal.Body>
+						{this.state.message.length < 10 &&
+							<Alert className="alert alert-danger" role="alert" style={{ textAlign: 'center', margin: '15px' }}>
+								Your message should contain atleast 10 characters.
+					</Alert>
+						}
+						<Modal.Footer>
+							<Button type='button' onClick={this.props.onHide} variant="outline-primary" className="d-flex w-50 text-center justify-content-center">CANCEL</Button>
+							<Button type='button' variant="primary" className='d-flex w-50 text-center justify-content-center' onClick={this.requestRental}>SUBMIT</Button>
+						</Modal.Footer>
+					</>
+				}
+
+			</Modal>
+		);
+	}
+}
+
 class List extends React.Component {
 	state = {
 		listing: [],
@@ -21,7 +124,9 @@ class List extends React.Component {
 		price: {
 			from: 0,
 			to: 0
-		}
+		},
+		show: false,
+		place: {} //? we need this to determine which place did the user click on to send the rental request
 	}
 	async componentDidMount() {
 		let url = 'http://localhost:4000/api/place/'
@@ -95,6 +200,7 @@ class List extends React.Component {
 
 		return (
 			<>
+				{this.state.show && <RentRequestModal show={this.state.show} place={this.state.place} onHide={() => this.setState({ show: false })} />}
 				<TopSearch />
 				<section className="section pt-5 pb-5 products-listing">
 					<Container>
@@ -245,25 +351,15 @@ class List extends React.Component {
 							</Col>
 							<Col md={9}>
 								<Row>
-									{this.state.listing.reverse().map(list => {
-										let Tile = <Col md={12} sm={12} className="mb-4 pb-2">
+									{this.state.listing.sort((a, b) => a.createdAt < b.createdAt).map(list => {
+										let Tile = <Col md={12} sm={12} className="mb-4 pb-2" >
 											<CardItem
-												id={list._id}
+												list={list}
 												isRentButton={true}
-												author={list.author}
-												date={list.createdAt}
-												title={list.title}
-												residents={list.residents}
-												subTitle={list.areaName}
-												description={list.description}
 												imageAlt='Product'
 												image='img/list/1.png'
 												imageClass='img-fluid item-img'
-												
-												offerText='65% off | Use Coupon OSAHAN50'
-												time='15–25 min'
-												price={list.price}
-												isAvailable={list.isAvailable}
+												onRentClick={() => this.setState({ place: list, show: true })}
 												promotedVariant='dark'
 												favIcoIconColor='text-danger'
 											/>

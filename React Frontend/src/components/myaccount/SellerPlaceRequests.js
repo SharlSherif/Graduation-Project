@@ -83,26 +83,18 @@ class SellerPlaceRequests extends React.Component {
                                 <h4 className="font-weight-bold mt-0 mb-3">Rental Requests for ({list.title})</h4>
                             </Col>
                             <Col md={12} sm={12} className="mb-4 pb-2">
-                                <Col md={8} sm={12} style={{ margin: 'auto' }} className="mb-4 pb-2">
+                                <Col lg={12} md={12} sm={12} style={{ margin: 'auto', maxWidth:'930px' }} className="mb-4 pb-2">
                                     {this.state.isLoading == false &&
                                         <>
                                             <p style={{ fontSize: 20 }}>Property details</p>
                                             <CardItem
-                                                title={list.title}
-                                                residents={list.residents}
-                                                subTitle={list.areaName}
-                                                description={list.description}
+                                                list={list}
                                                 rentalRequestsButtonClick={() => this.setState({ post: list, showPostRequests: true })}
                                                 isRentButton={false}
                                                 isEditButton={true}
                                                 imageAlt='Product'
                                                 image='img/list/1.png'
                                                 imageClass='img-fluid item-img'
-                                                
-                                                offerText='65% off | Use Coupon OSAHAN50'
-                                                time='15–25 min'
-                                                price={list.price.amount}
-                                                isAvailable={list.isAvailable}
                                                 promotedVariant='dark'
                                                 favIcoIconColor='text-danger'
                                             />
@@ -117,17 +109,17 @@ class SellerPlaceRequests extends React.Component {
                                                     <div class="position-relative" style={{ width: '100%' }}>
                                                         <div class="list-card-body">
                                                             <h6 class="mb-1">
-                                                                <p class="text-gray mb-3 time"><span class="text-black" style={{ fontSize: '1.6rem' }}>{request.username}</span><span class="float-right text-black" style={{ fontSize: '1.6rem' }}>
+                                                                <p class="text-gray mb-3 time"><span class="text-black" style={{ fontSize: '1.6rem' }}>{request.renterID.username}</span><span class="float-right text-black" style={{ fontSize: '1.6rem' }}>
                                                                     {/* {request.phone} */}
                                                                 </span></p>
                                                             </h6>
-                                                            <p class="text-gray mb-3" style={{ fontSize: '1rem' }}><i class="icofont-location-pin"></i>{!request.address ? "Not provided" : request.address}</p>
-                                                            <p class="text-gray mb-3" style={{ fontSize: '1rem' }}><i class="icofont-phone"></i>{request.phone}</p>
+                                                            <p class="text-gray mb-3" style={{ fontSize: '1rem' }}><i class="icofont-location-pin"></i>{!request.renterID.address ? "Not provided" : request.renterID.address}</p>
+                                                            <p class="text-gray mb-3" style={{ fontSize: '1rem' }}><i class="icofont-phone"></i>{request.renterID.phone}</p>
                                                             <div class="mt-5 buttons">
-                                                                <button id="button-1" type="button" class="btn btn-outline-success" onClick={() => this.decision(request._id, true)}>
+                                                                <button id="button-1" type="button" class="btn btn-outline-success" onClick={() => this.decision(request.renterID._id, true)}>
                                                                     Approve
                                                       </button>
-                                                                <button id="button-2" type="button" class="btn btn-outline-danger" onClick={() => this.decision(request._id, false)}>
+                                                                <button id="button-2" type="button" class="btn btn-outline-danger" onClick={() => this.decision(request.renterID._id, false)}>
                                                                     Reject
                                                          </button>
                                                             </div>

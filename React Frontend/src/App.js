@@ -86,7 +86,7 @@ class App extends React.Component {
           {/* regular users login page route */}
           <PublicRoute path="/login" exact component={Login} />
 
-          <Route path="/" exact component={Index} />
+          <Route path="/" exact component={List} />
           <Route path="/offers" exact component={Offers} />
           <Route path="/listing" exact component={List} />
           <Route path="/myaccount" component={MyAccount} />

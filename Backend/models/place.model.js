@@ -9,10 +9,14 @@ const place = mongoose.Schema({
         type: ObjectID,
         ref: 'User'
     }],
-    rentalRequests: [{ //? request for rental (NEEDS CONFIRMATION)
-        type: ObjectID,
-        ref: 'User',
-    }],
+    rentalRequests: [ //? request for rental (NEEDS CONFIRMATION)
+        { //? message is used to make contact with the seller stating the important details before they get on the phone
+            message: String,
+            renterID: { 
+                type: ObjectID,
+                ref: 'User',
+            }
+        }],
     // ? the seller who posted this place
     author: {
         type: ObjectID,

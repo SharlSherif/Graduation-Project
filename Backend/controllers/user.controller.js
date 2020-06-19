@@ -34,7 +34,7 @@ class UserController {
         try {
             let userResponse = await CRUD.getOne(User, 'placesFK', { _id: req.user._id })
             let rentalRequests = userResponse.data.placesFK
-            let userConfirmedRentalsResponse = await CRUD.getData(Place, true, [], { renters: req.user._id })
+            let userConfirmedRentalsResponse = await CRUD.getData(Place, true, ['author'], { renters: req.user._id })
             let confirmedRentals = userConfirmedRentalsResponse.data
             res.status(200).send({ confirmedRentals, rentalRequests })
         } catch (e) {
@@ -67,16 +67,21 @@ class UserController {
 
 
     static async rentalRequest(req, res) {
-        let placeID = req.params.id
+        let placeID = req.body.placeID
         let renterID = req.user._id // current user id
+        let message = req.body.message;
         let place = await CRUD.getOne(Place, false, { _id: placeID })
-        // the user must not be a current renter or has sent a rental request before
+        // ? the user must not be a current renter or has sent a rental request before
         if (
             !!place.data
             && place.data.renters.indexOf(renterID) == -1
-            && place.data.rentalRequests.indexOf(renterID) == -1
+            && place.data.rentalRequests.find(object => object.renterID == renterID) == undefined
         ) {
-            await CRUD.updateOne(Place, { _id: placeID }, { $push: { rentalRequests: req.user._id } })
+            let rentalRequestObject = {
+                message,
+                renterID
+            }
+            await CRUD.updateOne(Place, { _id: placeID }, { $push: { rentalRequests: rentalRequestObject } })
                 .then(response => {
                     res.status(201).send(response)
                 })

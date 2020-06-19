@@ -81,7 +81,7 @@ class Register extends React.Component {
 							<Container>
 								<Row>
 									<Col md={9} lg={8} className="mx-auto pl-5 pr-5">
-										<h3 className="login-heading mb-4">Welcome back!</h3>
+										<h3 className="login-heading mb-4">Join Us!</h3>
 										<form onSubmit={this.Register}>
 											<div className="form-label-group">
 												<Form.Control type="text" id="inputusername" value={this.state.username} onChange={e => this.setState({ username: e.target.value })} placeholder="username" />

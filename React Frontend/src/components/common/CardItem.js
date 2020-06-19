@@ -34,10 +34,22 @@ class CardItem extends React.Component {
 			.catch(err => console.log(err))
 	}
 	render() {
+		let list = this.props.list;
+		let id = list._id
+		let author = list.author
+		let price = list.price
+		let date = list.createdAt
+		let title = list.title
+		let isAvailable = list.isAvailable
+		let residents = list.residents
+		let subTitle = list.areaName
+		let description = list.description
 		let residents_available = []
 		let residents_current = []
-		let diff = this.props.residents.maximum - this.props.residents.current
-		for (let i = 0; i < this.props.residents.maximum - diff; i++) {
+		let rentalRequestsLength = list.rentalRequests.length
+
+		let diff = residents.maximum - residents.current
+		for (let i = 0; i < residents.maximum - diff; i++) {
 			residents_current.push(0)
 		}
 		for (let i = 0; i < diff; i++) {
@@ -61,14 +73,14 @@ class CardItem extends React.Component {
 							<Icofont icon='heart' />
 						</Link>
 					</div> */}
-						{!this.props.isAvailable ? (
+						{!isAvailable ? (
 							<div className="member-plan position-absolute">
 								<Badge variant={this.props.promotedVariant}>Unavailable</Badge>
 							</div>
 						)
 							: ""
 						}
-						<Link to={`/detail?${this.props.id}`}>
+						<Link to={`/detail?${id}`}>
 							<Image src={this.props.image} className={this.props.imageClass} alt={this.props.imageAlt} />
 						</Link>
 					</div>
@@ -77,21 +89,21 @@ class CardItem extends React.Component {
 
 							<h6 className="mb-1">
 								<p className="text-gray mb-3 time">
-									<Link to={this.props.linkUrl} className="text-black">{this.props.title}</Link>
-									{this.props.price ? (
-										<span className="float-right text-black-50">{this.props.price.amount} {this.props.price.currency}/Month</span>
+									<Link to={this.props.linkUrl} className="text-black">{title}</Link>
+									{price ? (
+										<span className="float-right text-black-50">{price.amount} {price.currency}/Month</span>
 									)
 										: ""
 									}
 								</p>
 							</h6>
-							{this.props.subTitle ? (
-								<p className="text-gray mb-3">{this.props.subTitle}</p>
+							{subTitle ? (
+								<p className="text-gray mb-3">{subTitle}</p>
 							)
 								: ''
 							}
 							<p>
-								{this.props.description}
+								{description}
 							</p>
 							<div class="available-slots">
 								{residents_current.map(x => {
@@ -104,13 +116,13 @@ class CardItem extends React.Component {
 
 							<div class="buttons">
 								<div class="mt-3 mb-3">
-									<Icofont icon="clock-time" />   {`  ${this.props.date}`}
+									<Icofont icon="clock-time" />   {`  ${moment(date, "DD-MM-YYYY hh:mm:ss A").fromNow()}`}
 									<br />
-									<p style={{ color: 'black' }}><Icofont icon="icofont-user-alt-7" />{`  ${this.props.author.username}`}</p>
+									<p style={{ color: 'black' }}><Icofont icon="icofont-user-alt-7" />{`  ${author.username}`}</p>
 								</div>
-								{this.props.isRentButton == true && <Button variant="outline-secondary" type="button" id="button-1"><Icofont icon="ui-contact-list" /> Rent</Button>}
-								{this.props.isShowRequestsButton == true && <Button variant="outline-info" onClick={() => window.location = '/myaccount/seller/requests/?' + this.props.id} type="button" id="button-1" style={{ marginRight: '2%', width: '49%' }}><Icofont icon="list" /> Requests ({this.props.rentalRequestsLength})</Button>}
-								{this.props.isEditButton == true && <Button variant="outline-secondary" type="button" id="button-1" style={{ width: '49%' }} onClick={() => window.location = '/myaccount/seller/edit/?' + this.props.id}><Icofont icon="list" /> Edit</Button>}
+								{this.props.isRentButton == true && <Button variant="outline-secondary" onClick={this.props.onRentClick} type="button" id="button-1"><Icofont icon="ui-contact-list" /> Rent</Button>}
+								{this.props.isShowRequestsButton == true && <Button variant="outline-info" onClick={() => window.location = '/myaccount/seller/requests/?' + id} type="button" id="button-1" style={{ marginRight: '2%', width: '49%' }}><Icofont icon="list" /> Requests ({rentalRequestsLength})</Button>}
+								{this.props.isEditButton == true && <Button variant="outline-secondary" type="button" id="button-1" style={{ width: '49%' }} onClick={() => window.location = '/myaccount/seller/edit/?' + id}><Icofont icon="list" /> Edit</Button>}
 								{this.props.isDeleteButton == true && <Button variant="outline-danger" onClick={this.remove} type="button" id="button-1" style={{ marginTop: 5, width: '100%' }}><Icofont icon="icofont-ui-delete" /> Remove</Button>}
 
 								{this.props.isShowRequestsButton !== true && <Button style={{ width: (this.props.isRentButton == false && this.props.isEditButton == false) ? '100%' : '50%' }} variant="outline-secondary" type="button" id="button-2"><Icofont icon="google-map" /> Location</Button>}

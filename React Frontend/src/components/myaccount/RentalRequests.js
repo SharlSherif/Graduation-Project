@@ -22,19 +22,11 @@ class RentalRequests extends React.Component {
                             {this.context.rentalRequests && this.context.rentalRequests.length > 0 ? this.context.rentalRequests.map(list => (
                                 <Col md={12} sm={12} className="mb-4 pb-2">
                                     <CardItem
-                                        title={list.title}
-                                        residents={list.residents}
-                                        subTitle={list.areaName}
-                                        description={list.description}
+                                        list={list}
                                         isRentButton={false}
                                         imageAlt='Product'
                                         image='img/list/1.png'
                                         imageClass='img-fluid item-img'
-                                        
-                                        offerText='65% off | Use Coupon OSAHAN50'
-                                        time='15–25 min'
-                                        price={list.price.amount}
-                                        isAvailable={list.isAvailable}
                                         promotedVariant='dark'
                                         favIcoIconColor='text-danger'
                                     />
