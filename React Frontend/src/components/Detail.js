@@ -12,6 +12,11 @@ import Review from './common/Review';
 import Icofont from 'react-icofont';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
+
+import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import { mapbox_token } from "../config.json"
+
 class DemoCarousel extends React.Component {
 	render() {
 		return (
@@ -35,16 +40,11 @@ class Detail extends React.Component {
 
 		this.state = {
 			details: {},
-			residents_available: [],
-			residents_current: []
 		};
 	}
 
 	async componentDidMount() {
-		// if (window.location.search.length < 1) {
-		// 	window.location = '/listing'
-		// 	return
-		// }
+		mapboxgl.accessToken = mapbox_token
 		let url = 'http://localhost:4000/api/place/' + window.location.search.replace("?", "")
 		await fetch(url, {
 			method: 'GET', // *GET, POST, PUT, DELETE, etc.
@@ -59,32 +59,40 @@ class Detail extends React.Component {
 			.then(json => {
 				if (json.success) {
 					let details = json.data
-					let residents_available = []
-					let residents_current = []
-					let diff = details.residents.maximum - details.residents.current
-					for (let i = 0; i < details.residents.maximum - diff; i++) {
-						residents_current.push(0)
-					}
-					for (let i = 0; i < diff; i++) {
-						residents_available.push(0)
-					}
-					this.setState({ details, residents_available, residents_current })
+					this.setState({ details })
+					console.log(details.location)
+					let map = new mapboxgl.Map({
+						container: 'map',
+						style: 'mapbox://styles/mapbox/streets-v9',
+						zoom: 9,
+						center: [details.location.lng, details.location.lat]
+					});
+					console.log(map)
+					new mapboxgl.Marker()
+						.setLngLat([details.location.lng, details.location.lat])
+						.addTo(map);
+					// map.addControl(new mapboxgl.FullscreenControl());
+
 				}
+
+				// map.addControl(
+				// 	new MapboxGeocoder({
+				// 		accessToken: mapboxgl.accessToken,
+				// 		mapboxgl
+				// 	})
+				// );
 				console.log(json)
 			})
 			.catch(err => console.log(err))
-		// let details = JSON.parse(window.location.search.replace("?", "").replace(/%20/g, ' ').replace(/%22/g, '"'))
-
 	}
 
 	render() {
-		let { details, residents_available, residents_current } = this.state
+		let { details } = this.state
 
 		return (
 			<>
-
-				<section className="offer-dedicated-body pt-2 pb-2 mt-4 mb-4 col-lg-6 col-md-12" style={{ margin: 'auto' }}>
-					<Container>
+				<section className="offer-dedicated-body pt-2 pb-2 mt-4 mb-4" style={{ margin: 'auto' }}>
+					<div style={{ marginLeft: '5%', marginRight: '5%' }}>
 						<h2>{details.title}</h2>
 						<Row>
 							<Col md={12}>
@@ -92,95 +100,157 @@ class Detail extends React.Component {
 									<div className='h-100'>
 										<div className='position-relative'>
 											<div id="restaurant-info" className="bg-white rounded shadow-sm p-4 mb-4">
-												<DemoCarousel />
-												<hr />
-												<p className="mb-3" style={{ overflowWrap: 'break-word' }}>
-													{details.description}
-												</p>
-												<hr />
-												<ul style={{ listStyleType: 'none', padding: 0 }}>
-													<li>
-
-														<div class="available-slots"><p>
-															Price:
-															<span style={{ color: 'black' }}>{!!details.price && '  ' + details.price.amount} EGP/Month</span>
-
-														</p>
-														</div>
-													</li>
-													<li>
-														<div class="available-slots"><p>
-															Target:
-															<span style={{ color: 'black' }}>{'  ' + details.type}s</span>
-														</p>
-														</div>
-													</li>
-													<li>
-														<p>
-															Residents:
-													<div class="available-slots">
-																{residents_current.map(x => {
-																	return <img class="user-icon" src="img/user-black.svg" />
-																})}
-																{residents_available.map(x => {
-																	return <img class="user-icon" src="img/user-white.svg" />
-																})}
-															</div>
-														</p>
-													</li>
-												</ul>
-												<hr />
-												<p>Features</p>
-												<ul style={{ listStyleType: 'none', padding: 0 }}>
-													<li>
-														<div class="available-slots"><p>
-															Furnished:
-															<span style={{ color: 'black' }}>{!!details.filters && '  ' + details.filters.isFurnished}</span>
-														</p>
-														</div>
-													</li>
-													<li>
-														<div class="available-slots"><p>
-															Bed Rooms:
-															<span style={{ color: 'black' }}>{!!details.filters && '  ' + details.filters.bedrooms}</span>
-														</p>
-														</div>
-													</li>
-													<li>
-														<div class="available-slots"><p>
-															Bath Rooms:
-															<span style={{ color: 'black' }}>{!!details.filters && '  ' + details.filters.bathrooms}</span>
-														</p>
-														</div>
-													</li>
-													<li>
-														<div class="available-slots"><p>
-															Area (m²):
-															<span style={{ color: 'black' }}>{!!details.filters && '  ' + details.filters.areaM2}</span>
-														</p>
-														</div>
-													</li>
-												</ul>
-
-												<hr className="clearfix" />
-												<div className="address-map">
-													<p>
-														<Icofont icon="google-map" />
-														{details.areaName}
-													</p>
-													<div className="mapouter">
-														<div className="gmap_canvas">
-															<iframe title='addressMap' width="300" height="170" id="gmap_canvas" src="https://maps.google.com/maps?q=university%20of%20san%20francisco&t=&z=9&ie=UTF8&iwloc=&output=embed" frameBorder="0" scrolling="no" marginHeight="0" marginWidth="0"></iframe></div>
+												<Row>
+													<div class="col-6">
+														<DemoCarousel />
 													</div>
-												</div>
-												<Button variant="outline-secondary" style={{ marginTop: '5px' }} type="button" id="button-1"><Icofont icon="ui-contact-list" /> Rent</Button>
+													<div class="col-6">
+														<label style={{ fontSize: '1.2rem' }}>Information</label>
+														<table style={{
+															"width": "100%",
+															borderCollapse: "collapse"
+														}}>
+															<tr>
+																<th style={{
+																	border: '1px solid #dddddd',
+																	textAlign: 'left',
+																	padding: '8px'
+																}}>Price</th>
+																<th style={{
+																	border: '1px solid #dddddd',
+																	textAlign: 'left',
+																	padding: '8px'
+																}}>Targeted Customers</th>
+																<th style={{
+																	border: '1px solid #dddddd',
+																	textAlign: 'left',
+																	padding: '8px'
+																}}>Current Residents</th>
+																<th style={{
+																	border: '1px solid #dddddd',
+																	textAlign: 'left',
+																	padding: '8px'
+																}}>Available Slots</th>
+															</tr>
+															<tr>
+																<td style={{
+																	border: '1px solid #dddddd',
+																	textAlign: 'left',
+																	padding: '8px',
+																	textAlign: 'center'
+																}}>{!!details.price && '  ' + details.price.amount} {!!details.price && details.price.currency}/Month</td>
+																<td style={{
+																	border: '1px solid #dddddd',
+																	textAlign: 'left',
+																	padding: '8px',
+																	textAlign: 'center'
+																}}>{details.type}s</td>
+																<td style={{
+																	border: '1px solid #dddddd',
+																	textAlign: 'left',
+																	padding: '8px',
+																	textAlign: 'center'
+																}}>{details.residents && details.residents.current}</td>
+																<td style={{
+																	border: '1px solid #dddddd',
+																	textAlign: 'left',
+																	padding: '8px',
+																	textAlign: 'center'
+																}}>{details.residents && details.residents.maximum - details.residents.current}</td>
+															</tr>
+														</table>
+														<hr />
+														<div className="mb-3">
+															<label style={{ fontSize: '1.2rem' }}>Features</label>
+															<table style={{
+																"width": "100%",
+																borderCollapse: "collapse"
+															}}>
+																<tr>
+																	<th style={{
+																		border: '1px solid #dddddd',
+																		textAlign: 'left',
+																		padding: '8px'
+																	}}>Furnished</th>
+																	<th style={{
+																		border: '1px solid #dddddd',
+																		textAlign: 'left',
+																		padding: '8px'
+																	}}>Bed Rooms</th>
+																	<th style={{
+																		border: '1px solid #dddddd',
+																		textAlign: 'left',
+																		padding: '8px'
+																	}}>Bath Rooms</th>
+																	<th style={{
+																		border: '1px solid #dddddd',
+																		textAlign: 'left',
+																		padding: '8px'
+																	}}>Area Measurement</th>
+																</tr>
+																<tr>
+																	<td style={{
+																		border: '1px solid #dddddd',
+																		textAlign: 'left',
+																		padding: '8px',
+																		textAlign: 'center'
+																	}}>{!!details.filters && details.filters.isFurnished ? ' Yes' : ' No'}</td>
+																	<td style={{
+																		border: '1px solid #dddddd',
+																		textAlign: 'left',
+																		padding: '8px',
+																		textAlign: 'center'
+
+																	}}>{!!details.filters && '  ' + details.filters.bedrooms}</td>
+																	<td style={{
+																		border: '1px solid #dddddd',
+																		textAlign: 'left',
+																		padding: '8px',
+																		textAlign: 'center'
+																	}}>{!!details.filters && details.filters.bathrooms}</td>
+																	<td style={{
+																		border: '1px solid #dddddd',
+																		textAlign: 'left',
+																		padding: '8px',
+																		textAlign: 'center'
+																	}}>{!!details.filters && details.filters.areaM2} (m^2)</td>
+																</tr>
+															</table>
+														</div>
+
+														<div>
+															<label style={{ fontSize: '1.2rem' }}>Description</label>
+															<p className="mb-3" style={{ overflowWrap: 'break-word' }}>
+																{details.description}
+															</p>
+														</div>
+														<hr className="clearfix" />
+														<div>
+															<div className="address-map">
+																<p>
+																	<Icofont icon="google-map" />
+																	{details.areaName}
+																</p>
+																<div id='map' style={{ width: "600px", height: "300px" }}></ div>
+																{/* <div className="mapouter">
+																	<div className="gmap_canvas">
+																		<iframe title='addressMap' width="300" height="170" id="gmap_canvas" src="https://maps.google.com/maps?q=university%20of%20san%20francisco&t=&z=9&ie=UTF8&iwloc=&output=embed" frameBorder="0" scrolling="no" marginHeight="0" marginWidth="0"></iframe></div>
+																</div> */}
+															</div>
+															<Button variant="outline-secondary" style={{ marginTop: '5px' }} type="button" id="button-1"><Icofont icon="ui-contact-list" /> Rent</Button>
+														</div>
+
+
+													</div>
+												</Row>
+
 											</div>
 										</div>
 									</div>
 								</div>
 							</Col>
 						</Row>
-					</Container>
+					</div>
 				</section>
 
 			</>

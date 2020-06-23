@@ -1,10 +1,38 @@
 import React from 'react';
 import { Row, Col, Form, Dropdown } from 'react-bootstrap';
-import CardItem from '../common/CardItem';
+
+import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import { mapbox_token } from "../../config.json"
+import AsyncSelect from 'react-select/async';
+
+
+// class WithCallbacks extends React {
+//     state = { inputValue: '' };
+//     handleInputChange = (newValue) => {
+//         const inputValue = newValue.replace(/\W/g, '');
+//         this.setState({ inputValue });
+//         return inputValue;
+//     };
+//     render() {
+//         return (
+//             <div>
+//                 <pre>inputValue: "{this.state.inputValue}"</pre>
+//                 <AsyncSelect
+//                     cacheOptions
+//                     loadOptions={loadOptions}
+//                     defaultOptions
+//                     onInputChange={this.handleInputChange}
+//                 />
+//             </div>
+//         );
+//     }
+// }
+
 let arr = [
     { field: "title", message: "Title cannot be empty" },
     { field: "description", message: "Description cannot be empty" },
-    { field: "areaName", message: "Area Name cannot be empty" },
+    // { field: "areaName", message: "Area Name cannot be empty" },
     { field: "price", message: "Price cannot be empty" },
     { field: "maximum", message: "Please specify a maximum count for this property residents" },
     { field: "bedrooms", message: "Please specify the number of bedrooms" },
@@ -25,10 +53,48 @@ class SellerAddPlace extends React.Component {
             currency: "EGP",
             current: 0,
             isFurnished: false,
-            errors: []
+            errors: [],
+            // place_name, lat,lng
+            placeSearchResults: [],
+            cacheResults: [],
+            searchQuery: '',
+            locationID: null
         };
     }
 
+    async componentDidMount() {
+        await this.SearchForPlace("Cairo")
+    }
+    SearchForPlace = async (inputValue, callback) => {
+        let query = this.state.searchQuery
+        if (query.length < 1) return;
+        // return new Promise(async (r, j) => {
+        let url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?limit=10&access_token=${mapbox_token}`
+        await fetch(url, {
+            method: 'GET', // *GET, POST, PUT, DELETE, etc.
+            cache: "no-cache",
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(response => response.json())
+            .then(json => {
+                if (json.features.length > 0) {
+                    let places = json.features.map(x => ({ label: x.place_name, value: x.id }))
+                    // r(json.features.map(x=>x.place_name))
+                    this.setState({
+                        placeSearchResults: json.features,
+                        cacheResults: places
+                    })
+                    callback(places)
+
+                }
+            })
+            .catch(err => console.log(err))
+        // })
+
+    }
     Add = async () => {
         let messages = []
         for (let { field, message } of arr) {
@@ -36,12 +102,16 @@ class SellerAddPlace extends React.Component {
                 messages.push(message)
             }
         }
-        if (messages.length > 0) {
+        if (messages.length > 0 || !this.state.locationID) {
             this.setState({ errors: messages })
             return
         }
 
-
+        let locatePlaceObject = this.state.placeSearchResults.find(place => place.id == this.state.locationID)
+        let location = {
+            lat: locatePlaceObject.center[1],
+            lng: locatePlaceObject.center[0],
+        }
         let url = 'http://localhost:4000/api/place/'
         let object = {
             "title": this.state.title,
@@ -53,12 +123,8 @@ class SellerAddPlace extends React.Component {
             //     "b.com",
             //     "c.com"
             // ],
-            "areaName": this.state.areaName,
-            //! dont forget about adding a map
-            // "location": {
-            //     "lat": 30.0471581,
-            //     "lng": 31.3855297
-            // },
+            "areaName": locatePlaceObject.place_name,
+            "location": location,
             "price": {
                 "currency": this.state.currency,
                 "amount": this.state.price
@@ -74,7 +140,6 @@ class SellerAddPlace extends React.Component {
                 "areaM2": this.state.areaM2
             }
         }
-        console.table(object)
         await fetch(url, {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             cache: "no-cache",
@@ -97,7 +162,7 @@ class SellerAddPlace extends React.Component {
                 // }
                 if (json.success) {
                     this.setState({ errors: [], success: true })
-                    window.location="/myaccount/posts"
+                    window.location = "/myaccount/posts"
                 }
                 console.log(json)
             })
@@ -122,13 +187,21 @@ class SellerAddPlace extends React.Component {
                                                 <Form.Control type="text" id="inputTitle" value={this.state.title} onChange={e => this.setState({ title: e.target.value })} placeholder="Title" />
                                                 <Form.Label htmlFor="inputTitle">Title</Form.Label>
                                             </div>
-                                            <div className="form-label-group">
-                                                <Form.Control type="text" id="inputDescription" value={this.state.description} onChange={e => this.setState({ description: e.target.value })} placeholder="Description" />
-                                                <Form.Label htmlFor="inputDescription">Description</Form.Label>
+                                            <div className="mb-3">
+                                                <label >Description</label>
+                                                <textarea className="form-control" type="text" id="inputDescription" value={this.state.description} onChange={e => this.setState({ description: e.target.value })} placeholder="Description" ></textarea>
                                             </div>
-                                            <div className="form-label-group">
-                                                <Form.Control type="text" id="inputareaName" value={this.state.areaName} onChange={e => this.setState({ areaName: e.target.value })} placeholder="Area Name" />
-                                                <Form.Label htmlFor="inputareaName">Area Name</Form.Label>
+                                            <div>
+                                                {/* <Form.Control type="text" id="inputareaName" value={this.state.areaName} onChange={e => this.setState({ areaName: e.target.value })} placeholder="Area Name" /> */}
+                                                <label>Location</label>
+                                                <AsyncSelect
+                                                    onChange={(e) => this.setState({ locationID: e.value })}
+                                                    cacheOptions
+                                                    loadOptions={this.SearchForPlace}
+                                                    defaultOptions={this.state.cacheResults}
+                                                    placeholder="eg. Nasr City"
+                                                    onInputChange={(value) => this.setState({ searchQuery: value })}
+                                                />
                                             </div>
                                             <div className="row">
                                                 <div className="col-3 form-label-group" style={{ marginLeft: 15, padding: 0 }}  >

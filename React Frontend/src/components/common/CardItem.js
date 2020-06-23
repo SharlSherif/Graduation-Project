@@ -11,7 +11,7 @@ class CardItem extends React.Component {
 	}
 
 	remove = async () => {
-		let url = 'http://localhost:4000/api/place/' + this.props.id
+		let url = 'http://localhost:4000/api/place/' + this.props.list._id
 		await fetch(url, {
 			method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
 			cache: "no-cache",
@@ -24,7 +24,7 @@ class CardItem extends React.Component {
 			.then(response => response.json())
 			.then(json => {
 				if (json.success) {
-					this.setState({ message: `"${this.props.title}" has been removed successfully!` })
+					this.setState({ message: `"${this.props.list.title}" has been removed successfully!` })
 					setTimeout(() => {
 						window.location.reload()
 					}, 1000);
@@ -98,7 +98,7 @@ class CardItem extends React.Component {
 								</p>
 							</h6>
 							{subTitle ? (
-								<p className="text-gray mb-3">{subTitle}</p>
+								<p className="text-gray mb-3"><Icofont icon="location-pin" />{subTitle}</p>
 							)
 								: ''
 							}
@@ -150,34 +150,34 @@ class CardItem extends React.Component {
 }
 
 
-CardItem.propTypes = {
-	title: PropTypes.string.isRequired,
-	imageAlt: PropTypes.string,
-	image: PropTypes.string.isRequired,
-	imageClass: PropTypes.string,
-	linkUrl: PropTypes.string.isRequired,
-	offerText: PropTypes.string,
-	offerColor: PropTypes.string,
-	subTitle: PropTypes.string,
-	time: PropTypes.string,
-	price: PropTypes.string,
-	showPromoted: PropTypes.bool,
-	promotedVariant: PropTypes.string,
-	favIcoIconColor: PropTypes.string,
-	rating: PropTypes.string,
-};
-CardItem.defaultProps = {
-	imageAlt: '',
-	imageClass: '',
-	offerText: '',
-	offerColor: 'success',
-	subTitle: '',
-	time: '',
-	price: '',
-	showPromoted: false,
-	promotedVariant: 'dark',
-	favIcoIconColor: '',
-	rating: '',
-}
+// CardItem.propTypes = {
+// 	title: PropTypes.string.isRequired,
+// 	imageAlt: PropTypes.string,
+// 	image: PropTypes.string.isRequired,
+// 	imageClass: PropTypes.string,
+// 	linkUrl: PropTypes.string.isRequired,
+// 	offerText: PropTypes.string,
+// 	offerColor: PropTypes.string,
+// 	subTitle: PropTypes.string,
+// 	time: PropTypes.string,
+// 	price: PropTypes.string,
+// 	showPromoted: PropTypes.bool,
+// 	promotedVariant: PropTypes.string,
+// 	favIcoIconColor: PropTypes.string,
+// 	rating: PropTypes.string,
+// };
+// CardItem.defaultProps = {
+// 	imageAlt: '',
+// 	imageClass: '',
+// 	offerText: '',
+// 	offerColor: 'success',
+// 	subTitle: '',
+// 	time: '',
+// 	price: '',
+// 	showPromoted: false,
+// 	promotedVariant: 'dark',
+// 	favIcoIconColor: '',
+// 	rating: '',
+// }
 
 export default CardItem;

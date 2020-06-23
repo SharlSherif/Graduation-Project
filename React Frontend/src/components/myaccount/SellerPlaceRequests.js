@@ -83,7 +83,7 @@ class SellerPlaceRequests extends React.Component {
                                 <h4 className="font-weight-bold mt-0 mb-3">Rental Requests for ({list.title})</h4>
                             </Col>
                             <Col md={12} sm={12} className="mb-4 pb-2">
-                                <Col lg={12} md={12} sm={12} style={{ margin: 'auto', maxWidth:'930px' }} className="mb-4 pb-2">
+                                <Col lg={12} md={12} sm={12} style={{ margin: 'auto', maxWidth: '930px' }} className="mb-4 pb-2">
                                     {this.state.isLoading == false &&
                                         <>
                                             <p style={{ fontSize: 20 }}>Property details</p>
@@ -115,6 +115,7 @@ class SellerPlaceRequests extends React.Component {
                                                             </h6>
                                                             <p class="text-gray mb-3" style={{ fontSize: '1rem' }}><i class="icofont-location-pin"></i>{!request.renterID.address ? "Not provided" : request.renterID.address}</p>
                                                             <p class="text-gray mb-3" style={{ fontSize: '1rem' }}><i class="icofont-phone"></i>{request.renterID.phone}</p>
+                                                            <p class="text-gray mb-3" style={{ fontSize: '1rem' }}>{request.message}</p>
                                                             <div class="mt-5 buttons">
                                                                 <button id="button-1" type="button" class="btn btn-outline-success" onClick={() => this.decision(request.renterID._id, true)}>
                                                                     Approve

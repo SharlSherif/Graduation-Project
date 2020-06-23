@@ -70,7 +70,7 @@ class MyAccount extends React.Component {
                                        {!this.state.user.isSeller && this.state.user.status !== "pending" &&
                                           <Button onClick={() => window.location = "/myaccount/becomeseller"} style={{ width: '80%', fontSize: 13 }} variant="outline-success" type="button" id="button-2"><Icofont icon="list" /> APPLY FOR SELLING</Button>
                                        }
-                                       {this.state.user.status == "pending" && 
+                                       {this.state.user.status == "pending" &&
                                           <Button onClick={() => window.location = "/myaccount/becomeseller"} style={{ width: '80%', fontSize: 13 }} variant="outline-secondary" disabled type="button" id="button-2"><Icofont icon="list" /> Pending </Button>
                                        }
                                     </div>
@@ -84,9 +84,18 @@ class MyAccount extends React.Component {
                               <li className="nav-item">
                                  <NavLink className="nav-link" activeClassName="active" exact to="/myaccount/rentals"><i className="icofont-sale-discount"></i> Confirmed Rentals</NavLink>
                               </li>
-                              <li className="nav-item">
-                                 <NavLink className="nav-link" activeClassName="active" exact to="/myaccount/posts"><i className="icofont-heart"></i> Posts</NavLink>
-                              </li>
+                              <hr />
+                              {this.state.user.isSeller &&
+                                 <>
+                                    <li className="nav-item" style={{ marginLeft: '21px' }}>
+                                       <h4 style={{ fontSize: 17, color: '#7a7e8a' }}>Agent</h4>
+                                    </li>
+                                    <li className="nav-item" disabled>
+                                       <NavLink className="nav-link" activeClassName="active" exact to="/myaccount/posts"><i className="icofont-heart"></i> Posts</NavLink>
+                                    </li>
+
+                                 </>
+                              }
                               <li className="nav-item">
                                  <NavLink className="nav-link" activeClassName="active" exact to="/myaccount/settings"><i className="icofont-heart"></i> Settings</NavLink>
                               </li>
@@ -98,8 +107,6 @@ class MyAccount extends React.Component {
                            <Route path="/myaccount/requests" exact component={RentalRequests} />
                            <Route path="/myaccount/rentals" exact component={ConfirmedRentals} />
                            <Route path="/myaccount/posts" exact component={Posts} />
-                           <Route path="/myaccount/settings" exact component={Settings} />
-                           <Route path="/myaccount/settings" exact component={Settings} />
                            <Route path="/myaccount/settings" exact component={Settings} />
                         </Switch>
                      </Col>

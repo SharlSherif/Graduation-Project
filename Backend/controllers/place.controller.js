@@ -82,7 +82,7 @@ class PlaceController {
                     res.status(400).send(err)
                 })
         } else {
-            await CRUD.updateOne(Place, { _id: placeID }, { $pull: { rentalRequests: userID } })
+            await CRUD.updateOne(Place, { _id: placeID }, { $pull: { rentalRequests: { renterID: userID } } })
                 .then(async response => {
                     // await CRUD.updateOne(Place, { _id: placeID }, { $pull: { placesFK: placeID } })
                     //     .then(async () => {
