@@ -6,7 +6,8 @@ class RentRequestModal extends React.Component {
         currentUser: localStorage.token ? JSON.parse(localStorage.user) : null,
         author: this.props.place.author,
         displayWarning: false,
-        message: ""
+        message: "",
+        success: false
     }
     componentDidMount() {
         let { currentUser, author } = this.state;
@@ -44,7 +45,10 @@ class RentRequestModal extends React.Component {
 
                 console.log(res)
                 if (res.success) {
-                    this.props.onHide();
+                    this.setState({ success: true })
+                    setTimeout(() => {
+                        this.props.onHide();
+                    }, 1000);
                 }
             })
             .catch((error) => {
@@ -59,7 +63,7 @@ class RentRequestModal extends React.Component {
         return (
             <Modal
                 show={this.props.show}
-                onHide={this.props.onHide}
+                onHide={() => this.props.onHide()}
                 centered
             >
                 <Modal.Header closeButton={true}>
@@ -89,8 +93,14 @@ class RentRequestModal extends React.Component {
                                 Your message should contain atleast 10 characters.
 					</Alert>
                         }
+
+                        {this.state.success &&
+                            <Alert className="alert alert-success" role="alert" style={{ textAlign: 'center', margin: '15px' }}>
+                                Your rental request has been sent successfully, Thank you!
+                                </Alert>
+                        }
                         <Modal.Footer>
-                            <Button type='button' onClick={this.props.onHide} variant="outline-primary" className="d-flex w-50 text-center justify-content-center">CANCEL</Button>
+                            <Button type='button' onClick={() => this.props.onHide()} variant="outline-primary" className="d-flex w-50 text-center justify-content-center">CANCEL</Button>
                             <Button type='button' variant="primary" className='d-flex w-50 text-center justify-content-center' onClick={this.requestRental}>SUBMIT</Button>
                         </Modal.Footer>
                     </>

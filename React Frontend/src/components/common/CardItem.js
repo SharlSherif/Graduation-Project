@@ -125,7 +125,7 @@ class CardItem extends React.Component {
 								{this.props.isEditButton == true && <Button variant="outline-secondary" type="button" id="button-1" style={{ width: '49%' }} onClick={() => window.location = '/myaccount/seller/edit/?' + id}><Icofont icon="list" /> Edit</Button>}
 								{this.props.isDeleteButton == true && <Button variant="outline-danger" onClick={this.remove} type="button" id="button-1" style={{ marginTop: 5, width: '100%' }}><Icofont icon="icofont-ui-delete" /> Remove</Button>}
 
-								{this.props.isShowRequestsButton !== true && <Button style={{ width: (this.props.isRentButton == false && this.props.isEditButton == false) ? '100%' : '50%' }} variant="outline-secondary" type="button" id="button-2"><Icofont icon="google-map" /> Location</Button>}
+								{this.props.isShowRequestsButton !== true && <Button style={{ width: (this.props.isRentButton == false && this.props.isEditButton == false) ? '100%' : '50%' }} onClick={() => window.location = `/mapfs/?${list.location.lat}:${list.location.lng}`} variant="outline-secondary" type="button" id="button-2"><Icofont icon="google-map" /> Location</Button>}
 							</div>
 						</div>
 

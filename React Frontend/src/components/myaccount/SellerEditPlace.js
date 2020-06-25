@@ -1,6 +1,9 @@
 import React from 'react';
 import { Row, Col, Form, Dropdown } from 'react-bootstrap';
 import CardItem from '../common/CardItem';
+import AsyncSelect from 'react-select/async';
+import { mapbox_token } from "../../config.json"
+
 let arr = [
     { field: "title", message: "Title cannot be empty" },
     { field: "description", message: "Description cannot be empty" },
@@ -25,7 +28,11 @@ class SellerEditPlace extends React.Component {
             currency: "EGP",
             current: 0,
             isFurnished: false,
-            errors: []
+            errors: [],
+            placeSearchResults: [],
+            cacheResults: [],
+            searchQuery: '',
+            locationID: null
         };
     }
 
@@ -54,11 +61,8 @@ class SellerEditPlace extends React.Component {
                     //     "c.com"
                     // ],
                     "areaName": json.data.areaName,
-                    //! dont forget about adding a map
-                    // "location": {
-                    //     "lat": 30.0471581,
-                    //     "lng": 31.3855297
-                    // },
+                    "searchQuery": json.data.areaName,
+                    "location": json.data.location,
                     "price": json.data.price.amount,
                     "currency": json.data.price.currency,
                     "maximum": json.data.residents.maximum,
@@ -69,13 +73,42 @@ class SellerEditPlace extends React.Component {
                     "areaM2": json.data.filters.areaM2
                 }
                 if (json.success) {
-                    this.setState({...object})
+                    this.setState({ ...object })
                 }
                 console.log(json)
             })
             .catch(err => console.log(err))
     }
+    SearchForPlace = async (inputValue, callback) => {
+        let query = this.state.searchQuery
+        if (query.length < 1) return;
+        // return new Promise(async (r, j) => {
+        let url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?limit=10&access_token=${mapbox_token}`
+        await fetch(url, {
+            method: 'GET', // *GET, POST, PUT, DELETE, etc.
+            cache: "no-cache",
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(response => response.json())
+            .then(json => {
+                if (json.features.length > 0) {
+                    let places = json.features.map(x => ({ label: x.place_name, value: x.id }))
+                    // r(json.features.map(x=>x.place_name))
+                    this.setState({
+                        placeSearchResults: json.features,
+                        cacheResults: places
+                    })
+                    callback(places)
 
+                }
+            })
+            .catch(err => console.log(err))
+        // })
+
+    }
     Edit = async () => {
         let messages = []
         for (let { field, message } of arr) {
@@ -88,7 +121,7 @@ class SellerEditPlace extends React.Component {
             return
         }
 
-
+        let locatePlaceObject = this.state.placeSearchResults.find(place => place.id == this.state.locationID)
         let url = 'http://localhost:4000/api/place/' + window.location.search.replace("?", "")
         let object = {
             "title": this.state.title,
@@ -100,12 +133,8 @@ class SellerEditPlace extends React.Component {
             //     "b.com",
             //     "c.com"
             // ],
-            "areaName": this.state.areaName,
-            //! dont forget about adding a map
-            // "location": {
-            //     "lat": 30.0471581,
-            //     "lng": 31.3855297
-            // },
+            "areaName": locatePlaceObject.place_name,
+            "location": this.state.location,
             "price": {
                 "currency": this.state.currency,
                 "amount": this.state.price
@@ -173,9 +202,18 @@ class SellerEditPlace extends React.Component {
                                                 <Form.Control type="text" id="inputDescription" value={this.state.description} onChange={e => this.setState({ description: e.target.value })} placeholder="Description" />
                                                 <Form.Label htmlFor="inputDescription">Description</Form.Label>
                                             </div>
-                                            <div className="form-label-group">
-                                                <Form.Control type="text" id="inputLocation" value={this.state.areaName} onChange={e => this.setState({ location: e.target.value })} placeholder="Location" />
-                                                <Form.Label htmlFor="inputLocation">Location</Form.Label>
+                                            <div>
+                                                {/* <Form.Control type="text" id="inputareaName" value={this.state.areaName} onChange={e => this.setState({ areaName: e.target.value })} placeholder="Area Name" /> */}
+                                                <label>Location</label>
+                                                <AsyncSelect
+                                                    onChange={(e) => this.setState({ locationID: e.value })}
+                                                    cacheOptions
+                                                    loadOptions={this.SearchForPlace}
+                                                    defaultOptions={this.state.cacheResults}
+                                                    placeholder="eg. Nasr City"
+                                                    defaultValue={this.state.searchQuery}
+                                                    onInputChange={(value) => this.setState({ searchQuery: value })}
+                                                />
                                             </div>
                                             <div className="row">
                                                 <div className="col-3 form-label-group" style={{ marginLeft: 15, padding: 0 }}  >

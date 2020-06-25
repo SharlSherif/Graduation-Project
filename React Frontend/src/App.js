@@ -26,6 +26,7 @@ import SellerRegisterForm from './components/SellerRegisterForm';
 import SellerPlaceRequests from './components/myaccount/SellerPlaceRequests'
 import SellerAddPlace from './components/myaccount/SellerAddPlace';
 import SellerEditPlace from './components/myaccount/SellerEditPlace';
+import MapFullScreen from './components/MapboxFullScreen';
 
 const SellerRoute = ({ component: Component, ...rest }) => {
   let token = localStorage.getItem('token')
@@ -87,6 +88,8 @@ class App extends React.Component {
           <PublicRoute path="/login" exact component={Login} />
 
           <Route path="/" exact component={List} />
+          <Route path="/mapfs/" exact component={MapFullScreen} />
+
           <Route path="/offers" exact component={Offers} />
           <Route path="/listing" exact component={List} />
           <Route path="/myaccount" component={MyAccount} />

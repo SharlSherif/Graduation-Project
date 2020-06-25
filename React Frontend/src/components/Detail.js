@@ -16,6 +16,7 @@ import { Carousel } from 'react-responsive-carousel';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { mapbox_token } from "../config.json"
+import RentalRequestModal from './RentalRequestModal'
 
 class DemoCarousel extends React.Component {
 	render() {
@@ -40,6 +41,7 @@ class Detail extends React.Component {
 
 		this.state = {
 			details: {},
+			show: false
 		};
 	}
 
@@ -71,7 +73,7 @@ class Detail extends React.Component {
 					new mapboxgl.Marker()
 						.setLngLat([details.location.lng, details.location.lat])
 						.addTo(map);
-					// map.addControl(new mapboxgl.FullscreenControl());
+					map.addControl(new mapboxgl.FullscreenControl());
 
 				}
 
@@ -92,6 +94,8 @@ class Detail extends React.Component {
 		return (
 			<>
 				<section className="offer-dedicated-body pt-2 pb-2 mt-4 mb-4" style={{ margin: 'auto' }}>
+				{this.state.show && <RentalRequestModal show={this.state.show} place={details} onHide={(response) => this.setState({ show: false})} />}
+
 					<div style={{ marginLeft: '5%', marginRight: '5%' }}>
 						<h2>{details.title}</h2>
 						<Row>
@@ -231,13 +235,13 @@ class Detail extends React.Component {
 																	<Icofont icon="google-map" />
 																	{details.areaName}
 																</p>
-																<div id='map' style={{ width: "600px", height: "300px" }}></ div>
+																<div id='map' style={{ width: "900px", height: "300px", selfAlign: 'center' }}></ div>
 																{/* <div className="mapouter">
 																	<div className="gmap_canvas">
 																		<iframe title='addressMap' width="300" height="170" id="gmap_canvas" src="https://maps.google.com/maps?q=university%20of%20san%20francisco&t=&z=9&ie=UTF8&iwloc=&output=embed" frameBorder="0" scrolling="no" marginHeight="0" marginWidth="0"></iframe></div>
 																</div> */}
 															</div>
-															<Button variant="outline-secondary" style={{ marginTop: '5px' }} type="button" id="button-1"><Icofont icon="ui-contact-list" /> Rent</Button>
+															<Button variant="outline-success" className="col-3" style={{ marginTop: '25px' }} onClick={() => this.setState({ show: true })} type="button" id="button-1"><Icofont icon="ui-contact-list" /> Rent</Button>
 														</div>
 
 
