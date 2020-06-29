@@ -6,6 +6,7 @@ import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import { mapbox_token } from "../../config.json"
 import AsyncSelect from 'react-select/async';
 
+import ImageUploader from 'react-images-upload';
 
 // class WithCallbacks extends React {
 //     state = { inputValue: '' };
@@ -39,6 +40,7 @@ let arr = [
     { field: "bathrooms", message: "Please specify the number of bathrooms" },
     { field: "areaM2", message: "Please specify the Area (m^2)" },
     { field: "type", message: "Please select a target audience" },
+    { field: "images", message: "Please upload atleast 1 image" },
 ]
 
 class SellerAddPlace extends React.Component {
@@ -58,6 +60,7 @@ class SellerAddPlace extends React.Component {
             placeSearchResults: [],
             cacheResults: [],
             searchQuery: '',
+            images: [],
             locationID: null
         };
     }
@@ -96,9 +99,17 @@ class SellerAddPlace extends React.Component {
 
     }
     Add = async () => {
+     
+        let images = []
+
+        for (let file of this.state.images) {
+            let link = await this.uploadToImgur(file)
+            images.push(link)
+        }
+
         let messages = []
         for (let { field, message } of arr) {
-            if (this.state[field] == "" || this.state[field] == undefined) {
+            if (this.state[field] == "" || this.state[field] == undefined || this.state[field].length < 1) {
                 messages.push(message)
             }
         }
@@ -117,12 +128,7 @@ class SellerAddPlace extends React.Component {
             "title": this.state.title,
             "type": this.state.type,
             "description": this.state.description,
-            //! dont forget about adding images
-            // "images": [
-            //     "a.com",
-            //     "b.com",
-            //     "c.com"
-            // ],
+            "images": images,
             "areaName": locatePlaceObject.place_name,
             "location": location,
             "price": {
@@ -169,7 +175,40 @@ class SellerAddPlace extends React.Component {
             .catch(err => console.log(err))
     }
 
+    uploadToImgur = async file => {
+        const url = "https://api.imgur.com/3/image"
+        const formData = new FormData();
+        formData.append('type', 'file');
+        formData.append('image', file);
+        return new Promise(async (resolve, reject) => {
+            await fetch(url, {
+                method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                cache: "no-cache",
+                headers: {
+                    'Authorization': 'Client-ID d1b3c0f47b77916',
+                },
+                body: formData
+            })
+                .then(response => response.json())
+                .then(json => {
+                    if (json.success) {
+                        console.log(file.name + " UPLOADED")
+                        resolve(json.data.link)
+                    }
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+
+    }
+    onDrop = async images => {
+        this.setState({
+            images
+        });
+    }
     render() {
+        console.log(this.state.images)
         return (
             <>
                 <Col lg={6} md={12} sm={12} style={{ margin: 'auto', marginTop: 20 }}>
@@ -254,7 +293,13 @@ class SellerAddPlace extends React.Component {
                                                 <Form.Control type="number" id="inputArea" value={this.state.areaM2} onChange={e => this.setState({ areaM2: Number(e.target.value) })} placeholder="Area" />
                                                 <Form.Label htmlFor="inputArea">Area (m^2)</Form.Label>
                                             </div>
-
+                                            <ImageUploader
+                                                withIcon={true}
+                                                buttonText='Choose images'
+                                                onChange={this.onDrop}
+                                                imgExtension={['.jpg', '.jpeg', '.png']}
+                                                maxFileSize={5242880}
+                                            />
                                         </div>
                                     </form>
                                     {this.state.success &&

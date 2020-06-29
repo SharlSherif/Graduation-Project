@@ -65,10 +65,10 @@ class MyAccount extends React.Component {
                                        {this.state.user.phone && <p className="mb-1">{this.state.user.phone}</p>}
 
                                        {this.state.user.isSeller && <div>
-                                          <p>SELLER <img style={{ width: 24 }} src="https://img.icons8.com/cotton/64/000000/checkmark.png" /></p>
+                                          <p>Agent <img style={{ width: 24 }} src="https://img.icons8.com/cotton/64/000000/checkmark.png" /></p>
                                        </div>}
                                        {!this.state.user.isSeller && this.state.user.status !== "pending" &&
-                                          <Button onClick={() => window.location = "/myaccount/becomeseller"} style={{ width: '80%', fontSize: 13 }} variant="outline-success" type="button" id="button-2"><Icofont icon="list" /> APPLY FOR SELLING</Button>
+                                          <Button onClick={() => window.location = "/myaccount/becomeseller"} style={{ width: '80%', fontSize: 13 }} variant="outline-success" type="button" id="button-2"><Icofont icon="list" /> Agents Application</Button>
                                        }
                                        {this.state.user.status == "pending" &&
                                           <Button onClick={() => window.location = "/myaccount/becomeseller"} style={{ width: '80%', fontSize: 13 }} variant="outline-secondary" disabled type="button" id="button-2"><Icofont icon="list" /> Pending </Button>

@@ -6,7 +6,7 @@ const statusTypes = require('../helpers/statusTypes.json')
 class AdminController {
     static async requests(req, res) {
         // get all the Users whom accounts aren't activated
-        await CRUD.getData(User, false, { status: statusTypes[1] }) //? pending
+        await CRUD.getData(User, false, [], { status: statusTypes[1] }) //? pending
             .then(response => {
                 res.status(201).send(response)
             })

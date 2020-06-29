@@ -121,7 +121,7 @@ class SellerEditPlace extends React.Component {
             return
         }
 
-        let locatePlaceObject = this.state.placeSearchResults.find(place => place.id == this.state.locationID)
+        // let locatePlaceObject = this.state.placeSearchResults.find(place => place.id == this.state.locationID)
         let url = 'http://localhost:4000/api/place/' + window.location.search.replace("?", "")
         let object = {
             "title": this.state.title,
@@ -133,8 +133,8 @@ class SellerEditPlace extends React.Component {
             //     "b.com",
             //     "c.com"
             // ],
-            "areaName": locatePlaceObject.place_name,
-            "location": this.state.location,
+            // "areaName": locatePlaceObject.place_name,
+            // "location": this.state.location,
             "price": {
                 "currency": this.state.currency,
                 "amount": this.state.price
@@ -198,23 +198,11 @@ class SellerEditPlace extends React.Component {
                                                 <Form.Control type="text" id="inputTitle" value={this.state.title} onChange={e => this.setState({ title: e.target.value })} placeholder="Title" />
                                                 <Form.Label htmlFor="inputTitle">Title</Form.Label>
                                             </div>
-                                            <div className="form-label-group">
-                                                <Form.Control type="text" id="inputDescription" value={this.state.description} onChange={e => this.setState({ description: e.target.value })} placeholder="Description" />
-                                                <Form.Label htmlFor="inputDescription">Description</Form.Label>
+                                            <div className="mb-3">
+                                                <label >Description</label>
+                                                <textarea className="form-control" type="text" id="inputDescription" value={this.state.description} onChange={e => this.setState({ description: e.target.value })} placeholder="Description" ></textarea>
                                             </div>
-                                            <div>
-                                                {/* <Form.Control type="text" id="inputareaName" value={this.state.areaName} onChange={e => this.setState({ areaName: e.target.value })} placeholder="Area Name" /> */}
-                                                <label>Location</label>
-                                                <AsyncSelect
-                                                    onChange={(e) => this.setState({ locationID: e.value })}
-                                                    cacheOptions
-                                                    loadOptions={this.SearchForPlace}
-                                                    defaultOptions={this.state.cacheResults}
-                                                    placeholder="eg. Nasr City"
-                                                    defaultValue={this.state.searchQuery}
-                                                    onInputChange={(value) => this.setState({ searchQuery: value })}
-                                                />
-                                            </div>
+
                                             <div className="row">
                                                 <div className="col-3 form-label-group" style={{ marginLeft: 15, padding: 0 }}  >
                                                     <Form.Control type="number" id="inputPrice" value={this.state.price} onChange={e => this.setState({ price: Number(e.target.value) })} placeholder="Price" />
@@ -266,7 +254,6 @@ class SellerEditPlace extends React.Component {
                                                 <Form.Control type="number" id="inputArea" value={this.state.areaM2} onChange={e => this.setState({ areaM2: Number(e.target.value) })} placeholder="Area" />
                                                 <Form.Label htmlFor="inputArea">Area (m^2)</Form.Label>
                                             </div>
-
                                         </div>
                                     </form>
                                     {this.state.success &&

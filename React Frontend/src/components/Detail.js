@@ -94,7 +94,7 @@ class Detail extends React.Component {
 		return (
 			<>
 				<section className="offer-dedicated-body pt-2 pb-2 mt-4 mb-4" style={{ margin: 'auto' }}>
-				{this.state.show && <RentalRequestModal show={this.state.show} place={details} onHide={(response) => this.setState({ show: false})} />}
+					{this.state.show && <RentalRequestModal show={this.state.show} place={details} onHide={(response) => this.setState({ show: false })} />}
 
 					<div style={{ marginLeft: '5%', marginRight: '5%' }}>
 						<h2>{details.title}</h2>
@@ -106,7 +106,13 @@ class Detail extends React.Component {
 											<div id="restaurant-info" className="bg-white rounded shadow-sm p-4 mb-4">
 												<Row>
 													<div class="col-6">
-														<DemoCarousel />
+														<Carousel>
+															{details.images && details.images.map(url=>(
+																<div>
+																	<img src={url}/>
+																</div>
+															))}
+														</Carousel>
 													</div>
 													<div class="col-6">
 														<label style={{ fontSize: '1.2rem' }}>Information</label>

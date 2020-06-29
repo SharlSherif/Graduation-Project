@@ -67,7 +67,7 @@ class Dashboard extends React.Component {
             <>
                 <section className="offer-dedicated-body pt-2 pb-2 mt-4 mb-4">
                     <Container>
-                        <h2 style={{ textAlign: 'center' }}>Sellers Applicants</h2>
+                        <h2 style={{ textAlign: 'center' }}>Agents Applicants</h2>
                         <Row style={{ padding: 15 }}>
                             <Col md={6} style={{ margin: 'auto' }}>
                                 <div className="offer-dedicated-body-left">

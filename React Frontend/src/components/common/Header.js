@@ -49,7 +49,7 @@ class Header extends React.Component {
 				<Navbar onToggle={this.setIsNavExpanded}
 					expanded={this.state.isNavExpanded} color="light" expand='lg' className="navbar-light osahan-nav shadow-sm">
 					<Container>
-						<Navbar.Brand to="/"><Image src="/img/logo.png" alt='' /></Navbar.Brand>
+						<Navbar.Brand to="/"><Image src="/img/Logo.png" alt='' width="200px" /></Navbar.Brand>
 						<Navbar.Toggle />
 						<Navbar.Collapse id="navbarNavDropdown">
 							<Nav activeKey={0} className="ml-auto" onSelect={this.closeMenu}>

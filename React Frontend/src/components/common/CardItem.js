@@ -81,7 +81,7 @@ class CardItem extends React.Component {
 							: ""
 						}
 						<Link to={`/detail?${id}`}>
-							<Image src={this.props.image} className={this.props.imageClass} alt={this.props.imageAlt} />
+							<Image src={list.images[0] !== undefined ? list.images[0] : this.props.image} className={this.props.imageClass} alt={this.props.imageAlt} />
 						</Link>
 					</div>
 					<div className="p-3 position-relative">

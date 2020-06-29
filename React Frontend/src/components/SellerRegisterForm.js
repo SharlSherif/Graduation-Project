@@ -75,7 +75,7 @@ class SellerRegisterForm extends React.Component {
                             <Container style={{ height: 600 }}>
                                 <Row>
                                     <Col md={9} lg={8} className="mx-auto pl-5 pr-5">
-                                        <h3 className="login-heading mb-4">Become A Seller!</h3>
+                                        <h3 className="login-heading mb-4">Become an Agent</h3>
                                         <form onSubmit={this.Register}>
                                             <div className="form-label-group">
                                                 <Form.Control type="text" id="socialLink" value={this.state.socialLink} onChange={e => this.setState({ socialLink: e.target.value })} placeholder="(eg. Branded Website, Facebook Page, Twitter Account)" />
