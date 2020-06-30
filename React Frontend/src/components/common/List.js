@@ -2,11 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col, Container, Dropdown, Accordion, Button, Form, Spinner } from 'react-bootstrap';
 import Icofont from 'react-icofont';
-import PageTitle from './common/PageTitle';
-import CardItem from './common/CardItem';
-import CategoriesCarousel from './common/CategoriesCarousel';
-import TopSearch from './home/TopSearch'
-import RentalRequestModal from './RentalRequestModal'
+import CardItem from './CardItem';
+import TopSearch from '../home/TopSearch'
+import RentalRequestModal from '../modals/RentalRequestModal'
 
 class List extends React.Component {
 	state = {

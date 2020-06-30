@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col, Container, Form, Button, Alert } from 'react-bootstrap';
-import FontAwesome from './common/FontAwesome';
 
 class Login extends React.Component {
 	state = {

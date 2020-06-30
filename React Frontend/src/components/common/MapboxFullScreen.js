@@ -1,7 +1,7 @@
 import React from 'react';
 
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js';
-import { mapbox_token } from "../config.json"
+import { mapbox_token } from "../../config.json"
 import * as MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions';
 import '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css';
 

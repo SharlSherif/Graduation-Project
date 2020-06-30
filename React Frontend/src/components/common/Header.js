@@ -1,10 +1,6 @@
 import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { Navbar, Nav, Container, NavDropdown, Image, Badge } from 'react-bootstrap';
-import DropDownTitle from '../common/DropDownTitle';
-import CartDropdownHeader from '../cart/CartDropdownHeader';
-import CartDropdownItem from '../cart/CartDropdownItem';
-import Icofont from 'react-icofont';
 
 class Header extends React.Component {
 	constructor(props) {

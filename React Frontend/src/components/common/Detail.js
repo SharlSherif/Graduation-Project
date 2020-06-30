@@ -1,22 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col, Container, Form, InputGroup, Button, Tab, Nav, Image, Badge } from 'react-bootstrap';
-import ItemsCarousel from './common/ItemsCarousel';
-import GalleryCarousel from './common/GalleryCarousel';
-import CheckoutItem from './common/CheckoutItem';
-import BestSeller from './common/BestSeller';
-import QuickBite from './common/QuickBite';
-import StarRating from './common/StarRating';
-import RatingBar from './common/RatingBar';
-import Review from './common/Review';
 import Icofont from 'react-icofont';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
 
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js';
-import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
-import { mapbox_token } from "../config.json"
-import RentalRequestModal from './RentalRequestModal'
+import { mapbox_token } from "../../config.json"
+import RentalRequestModal from '../modals/RentalRequestModal'
 
 class DemoCarousel extends React.Component {
 	render() {

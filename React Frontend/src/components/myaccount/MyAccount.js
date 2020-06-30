@@ -1,19 +1,13 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
-import { NavLink, Link } from 'react-router-dom';
+import { Switch, Route,NavLink } from 'react-router-dom';
 import Icofont from 'react-icofont';
 import { Row, Col, Container, Image, Button } from 'react-bootstrap';
-import Offers from './myaccount/Offers';
-import Orders from './myaccount/Orders';
-import Favourites from './myaccount/Favourites';
-import Payments from './myaccount/Payments';
-import Addresses from './myaccount/Addresses';
-import EditProfileModal from './modals/EditProfileModal';
-import RentalRequests from './myaccount/RentalRequests'
-import Settings from './myaccount/settings';
-import Posts from './myaccount/Posts';
-import ConfirmedRentals from './myaccount/ConfirmedRentals';
-import Context from './context'
+import EditProfileModal from '../modals/EditProfileModal';
+import RentalRequests from './RentalRequests'
+import Settings from './settings';
+import Posts from './Posts';
+import ConfirmedRentals from './ConfirmedRentals';
+import Context from '../context'
 class MyAccount extends React.Component {
    constructor(props, context) {
       super(props, context);
