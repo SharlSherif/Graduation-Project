@@ -5,7 +5,9 @@ import Select2 from 'react-select2-wrapper';
 
 
 class TopSearch extends React.Component {
-
+	state = {
+		query: ''
+	}
 	render() {
 		return (
 			<section className="pt-5 pb-5 homepage-search-block position-relative">
@@ -18,29 +20,18 @@ class TopSearch extends React.Component {
 								<h5 className="mb-5 text-secondary font-weight-normal">Lists of the best rental apartments in Egypt posted by verified agents</h5>
 							</div>
 							<div className="homepage-search-form">
-								<Form className="form-noborder">
+								<Form className="form-noborder" onSubmit={e => {
+									e.preventDefault();
+									this.props.searchThroughAds(this.state.query)
+								}}>
 									<div className="form-row">
-										{/* <Form.Group className='col-lg-2 col-md-2 col-sm-12'>
-	                              <div className="location-dropdown">
-	                              	 <Icofont icon='location-arrow'/>
-	                                 <Select2 className="custom-select"
-		                                 data={[
-										    { text: 'Maadi', id: 1 },
-										    { text: 'October', id: 2 },
-										  ]}
-										  options={{
-										    placeholder: 'District',
-										  }}
-	                                 />
-	                              </div>
-	                           </Form.Group> */}
 										<Form.Group className='col-lg-2 col-md-2 col-sm-12'>
 											<div className="location-dropdown">
 												<Select2 className="custom-select"
 													data={[
-														{ text: 'General', id: 1, selected: true },
-														{ text: 'Student', id: 2 },
-														{ text: 'Employee', id: 3 },
+														{ text: 'General', id: 'general', selected: true },
+														{ text: 'Student', id: 'student' },
+														{ text: 'Employee', id: 'employee' },
 													]}
 													options={{
 														placeholder: 'Status',
@@ -49,11 +40,11 @@ class TopSearch extends React.Component {
 											</div>
 										</Form.Group>
 										<Form.Group className='col-lg-6 col-md-6 col-sm-12'>
-											<Form.Control type="text" placeholder="Search for an apartment.." size='lg' />
+											<Form.Control type="text" placeholder="Search for an apartment.." size='lg' onChange={e => this.setState({ query: e.target.value })} />
 										</Form.Group>
 
 										<Form.Group className='col-lg-2 col-md-2 col-sm-12'>
-											<Link to="listing" className="btn btn-primary btn-block btn-lg btn-gradient">Search</Link>
+											<Link className="btn btn-primary btn-block btn-lg btn-gradient" onClick={() => this.props.searchThroughAds(this.state.query)}>Search</Link>
 										</Form.Group>
 									</div>
 								</Form>
