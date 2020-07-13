@@ -188,7 +188,7 @@ class SellerEditPlace extends React.Component {
                     <div className='p-4 bg-white shadow-sm'>
                         <Row>
                             <Col md={12}>
-                                <h4 className="font-weight-bold mt-0 mb-3" style={{ textAlign: 'center' }}>New Property</h4>
+                                <h4 className="font-weight-bold mt-0 mb-3" style={{ textAlign: 'center' }}>Edit Property</h4>
                             </Col>
                             <Col md={12} sm={12} className="mb-4 pb-2" style={{ margin: 'auto' }}>
                                 <Col md={8} sm={12} style={{ margin: 'auto' }} className="mb-4 pb-2">
