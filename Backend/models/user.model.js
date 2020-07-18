@@ -43,7 +43,13 @@ const User = mongoose.Schema({
         type: String,
         default: moment(Date.now()).format('DD-MM-YYYY hh:mm:ss A')
     },
+
     isDeleted: { type: Boolean, default: false },
 });
 
+User.methods.toJSON = function () {
+    let obj = this.toObject();
+    delete obj.password;
+    return obj;
+}
 module.exports = mongoose.model('User', User);

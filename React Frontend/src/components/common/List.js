@@ -44,6 +44,23 @@ class List extends React.Component {
 		this.setState({ listingRender: results })
 	}
 
+	FilterBy = (type) => {
+		console.log(type)
+		if (type.length < 1) return
+		if (type == 'general') {
+			this.setState({ listingRender: this.state.listing })
+			return
+		}
+
+		let results = []
+		for (let list of this.state.listing) {
+			if (list.type == type) {
+				results.push(list)
+			}
+		}
+		this.setState({ listingRender: results })
+	}
+
 	resetFilters = () => {
 		this.setState({
 			isFurnished: 'All',
@@ -60,14 +77,10 @@ class List extends React.Component {
 			},
 		})
 	}
+
 	RenderListings = () => {
 		console.log('running rendering again')
 		let filtered_listing = this.state.listing
-		// for (let list of this.state.listing) {
-		// if (filtered_listing.find(list_a => list_a._id == list._id) !== undefined) {
-		// 	continue
-		// }
-
 		if (this.state.area !== 'All') {
 			filtered_listing = filtered_listing.filter(list => this.state.area == list.areaName)
 		}
@@ -90,6 +103,7 @@ class List extends React.Component {
 
 		this.setState({ listingRender: filtered_listing })
 	}
+
 	componentDidUpdate(prevProps, prevState) {
 		if (
 			(prevState.area == this.state.area)
@@ -105,9 +119,9 @@ class List extends React.Component {
 			prevState.isFurnished == this.state.isFurnished
 		) {
 			console.log("Nothing changed")
-			return
+		} else {
+			this.RenderListings()
 		}
-		this.RenderListings()
 	}
 	async componentDidMount() {
 		let url = 'http://localhost:4000/api/place/'
@@ -140,7 +154,7 @@ class List extends React.Component {
 				type='radio'
 				name="areaName"
 				id={'default-areaName' + i}
-				label={<React.Fragment>{x.areaName}<small className="text-black-50"> {this.state.listing.filter(y => y.areaName == x.areaName).length}</small></React.Fragment>}
+				label={<React.Fragment>{x.areaName.split(',')[0]}<small className="text-black-50"> {this.state.listing.filter(y => y.areaName == x.areaName).length}</small></React.Fragment>}
 			/>
 		})
 	}
@@ -181,7 +195,7 @@ class List extends React.Component {
 		return (
 			<>
 				{this.state.show && <RentalRequestModal show={this.state.show} place={this.state.place} onHide={() => this.setState({ show: false })} />}
-				<TopSearch searchThroughAds={this.searchThroughAds} />
+				<TopSearch searchThroughAds={this.searchThroughAds} FilterBy={this.FilterBy} />
 				<section className="section pt-5 pb-5 products-listing">
 					<Container>
 						<Row>

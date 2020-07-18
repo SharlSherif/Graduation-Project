@@ -12,7 +12,7 @@ router.get('/profile', UserController.profileDetails)
 router.get('/', UserController.getData);
 
 router.put(
-    '/:id',
+    '/',
     UserController.update
 );
 router.delete(

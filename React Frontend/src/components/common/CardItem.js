@@ -112,6 +112,7 @@ class CardItem extends React.Component {
 								{residents_available.map(x => {
 									return <img class="user-icon" src="img/user-white.svg" />
 								})}
+								({(residents_current.length) + "/" + residents.maximum})
 							</div>
 
 							<div class="buttons">
@@ -125,7 +126,9 @@ class CardItem extends React.Component {
 								{this.props.isEditButton == true && <Button variant="outline-secondary" type="button" id="button-1" style={{ width: '49%' }} onClick={() => window.location = '/myaccount/seller/edit/?' + id}><Icofont icon="list" /> Edit</Button>}
 								{this.props.isDeleteButton == true && <Button variant="outline-danger" onClick={this.remove} type="button" id="button-1" style={{ marginTop: 5, width: '100%' }}><Icofont icon="icofont-ui-delete" /> Remove</Button>}
 
-								{this.props.isShowRequestsButton !== true && <Button style={{ width: (this.props.isRentButton == false && this.props.isEditButton == false) ? '100%' : '50%' }} onClick={() => window.location = `/mapfs/?${list.location.lat}:${list.location.lng}`} variant="outline-secondary" type="button" id="button-2"><Icofont icon="google-map" /> Location</Button>}
+								{this.props.isShowRequestsButton !== true && <Button style={{ width: (this.props.isRentButton == false && this.props.isEditButton == false) ? '100%' : '50%' }} onClick={() => window.location = `/mapfs/?${list.location.lat}:${list.location.lng}`} variant="outline-secondary" type="button" id="button-2">
+									<span className="icofont-map-pins" style={{ fontSize: 22, marginRight: 3 }} />
+									Directions</Button>}
 							</div>
 						</div>
 

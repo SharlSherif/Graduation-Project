@@ -15,15 +15,15 @@ class UserController {
     }
 
     static async getOne(req, res) {
-        let id = req.params.id;
+        const id = req.params.id;
 
         await CRUD.getOne(User, false, { _id: id }) // autopopulate off
             .then(async response => {
                 if (!response.success) {
-                    return res.status(404).send(response)
+                    res.status(404).send(response)
+                } else {
+                    res.status(200).send(response)
                 }
-
-                return res.status(200).send(response)
             })
             .catch(err => {
                 res.status(400).send(err)
@@ -56,13 +56,23 @@ class UserController {
     }
 
     static async update(req, res) {
-        await CRUD.updateOne(User, { _id: req.params.id }, { $set: req.body })
-            .then(response => {
-                res.status(201).send(response)
-            })
-            .catch(err => {
-                res.status(400).send(err)
-            })
+        let body = req.body
+        let user = req.user
+
+        let query = { _id: user._id }
+
+        // ? requesting to change the password but the current password is not correct
+        if (!!body.currentPassword && body.currentPassword.length > 0) {
+            query.password = body.currentPassword
+        }
+
+        try {
+            let response = await CRUD.updateOne(User, query, { $set: req.body })
+            return res.status(201).send(response)
+        }
+        catch (e) {
+            res.status(400).send(e)
+        }
     }
 
 

@@ -6,7 +6,7 @@ import Select2 from 'react-select2-wrapper';
 
 class TopSearch extends React.Component {
 	state = {
-		query: ''
+		query: '',
 	}
 	render() {
 		return (
@@ -29,13 +29,14 @@ class TopSearch extends React.Component {
 											<div className="location-dropdown">
 												<Select2 className="custom-select"
 													data={[
-														{ text: 'General', id: 'general', selected: true },
+														{ text: 'General', id: 'general' },
 														{ text: 'Student', id: 'student' },
 														{ text: 'Employee', id: 'employee' },
 													]}
 													options={{
 														placeholder: 'Status',
 													}}
+													onChange={e=> this.props.FilterBy(e.target.value)}
 												/>
 											</div>
 										</Form.Group>
