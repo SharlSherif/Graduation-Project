@@ -1,5 +1,6 @@
 import React from 'react';
 import { Row, Col, Container, Form, InputGroup, Button, Tab, Nav, Image, Badge, Alert } from 'react-bootstrap';
+import {API} from "../../config.json"
 
 class Dashboard extends React.Component {
     constructor(props, context) {
@@ -14,7 +15,7 @@ class Dashboard extends React.Component {
         await this.getAllRequests()
     }
     async getAllRequests() {
-        await fetch('http://localhost:4000/api/admin/requests/', {
+        await fetch(API+'/admin/requests/', {
             method: 'GET',
             mode: 'cors', // include, *same-origin, omit
             headers: {
@@ -38,7 +39,7 @@ class Dashboard extends React.Component {
     }
     async decision(id, type) {
         if (type !== '' && id !== '') {
-            await fetch('http://localhost:4000/api/admin/requests/decision/' + id, {
+            await fetch(API+'/admin/requests/decision/' + id, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

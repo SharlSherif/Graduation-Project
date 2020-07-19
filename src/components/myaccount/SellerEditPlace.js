@@ -2,7 +2,7 @@ import React from 'react';
 import { Row, Col, Form, Dropdown } from 'react-bootstrap';
 import CardItem from '../common/CardItem';
 import AsyncSelect from 'react-select/async';
-import { mapbox_token } from "../../config.json"
+import { mapbox_token, API } from "../../config.json"
 
 let arr = [
     { field: "title", message: "Title cannot be empty" },
@@ -37,7 +37,7 @@ class SellerEditPlace extends React.Component {
     }
 
     async componentDidMount() {
-        let url = 'http://localhost:4000/api/place/' + window.location.search.replace("?", "")
+        let url = API + '/place/' + window.location.search.replace("?", "")
 
         await fetch(url, {
             method: 'GET', // *GET, POST, PUT, DELETE, etc.
@@ -122,7 +122,7 @@ class SellerEditPlace extends React.Component {
         }
 
         // let locatePlaceObject = this.state.placeSearchResults.find(place => place.id == this.state.locationID)
-        let url = 'http://localhost:4000/api/place/' + window.location.search.replace("?", "")
+        let url = API + '/place/' + window.location.search.replace("?", "")
         let object = {
             "title": this.state.title,
             "type": this.state.type,

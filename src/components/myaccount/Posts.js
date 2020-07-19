@@ -3,6 +3,8 @@ import { Row, Col, } from 'react-bootstrap';
 import CardItem from '../common/CardItem';
 import { Image, Badge, Button } from 'react-bootstrap';
 import Icofont from 'react-icofont';
+import { API } from "../../config.json"
+
 class Posts extends React.Component {
     constructor(props, context) {
         super(props, context);
@@ -15,7 +17,7 @@ class Posts extends React.Component {
     }
 
     async componentDidMount() {
-        let url = 'http://localhost:4000/api/place/seller/posts/'
+        let url = API+'/place/seller/posts/'
         await fetch(url, {
             method: 'GET', // *GET, POST, PUT, DELETE, etc.
             cache: "no-cache",

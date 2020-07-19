@@ -7,6 +7,7 @@ import { mapbox_token } from "../../config.json"
 import AsyncSelect from 'react-select/async';
 
 import ImageUploader from 'react-images-upload';
+import {  API } from "../../config.json"
 
 // class WithCallbacks extends React {
 //     state = { inputValue: '' };
@@ -123,7 +124,7 @@ class SellerAddPlace extends React.Component {
             lat: locatePlaceObject.center[1],
             lng: locatePlaceObject.center[0],
         }
-        let url = 'http://localhost:4000/api/place/'
+        let url = API+'/place/'
         let object = {
             "title": this.state.title,
             "type": this.state.type,

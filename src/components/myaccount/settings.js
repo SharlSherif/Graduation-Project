@@ -1,6 +1,7 @@
 import React from 'react';
 import { Row, Col, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import {  API } from "../../config.json"
 
 class Settings extends React.Component {
     constructor(props, context) {
@@ -16,7 +17,7 @@ class Settings extends React.Component {
     }
 
     save = async () => {
-        let url = 'http://localhost:4000/api/user/'
+        let url = API+'/user/'
         if ((this.state.newPwd !== this.state.confirmPwd) && this.state.currentPwd.length > 0) {
             this.setState({ message: "Passwords doesn't match" })
             return

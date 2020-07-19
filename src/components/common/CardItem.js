@@ -4,6 +4,7 @@ import { Image, Badge, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import Icofont from 'react-icofont';
 import moment from 'moment';
+import { API } from "../../config.json"
 
 class CardItem extends React.Component {
 	state = {
@@ -11,7 +12,7 @@ class CardItem extends React.Component {
 	}
 
 	remove = async () => {
-		let url = 'http://localhost:4000/api/place/' + this.props.list._id
+		let url = API+'/place/' + this.props.list._id
 		await fetch(url, {
 			method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
 			cache: "no-cache",

@@ -6,7 +6,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a lo
 import { Carousel } from 'react-responsive-carousel';
 
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js';
-import { mapbox_token } from "../../config.json"
+import { mapbox_token,API } from "../../config.json"
 import RentalRequestModal from '../modals/RentalRequestModal'
 
 class DemoCarousel extends React.Component {
@@ -38,7 +38,7 @@ class Detail extends React.Component {
 
 	async componentDidMount() {
 		mapboxgl.accessToken = mapbox_token
-		let url = 'http://localhost:4000/api/place/' + window.location.search.replace("?", "")
+		let url = API+'/place/' + window.location.search.replace("?", "")
 		await fetch(url, {
 			method: 'GET', // *GET, POST, PUT, DELETE, etc.
 			cache: "no-cache",

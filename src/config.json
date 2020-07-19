@@ -1,3 +1,4 @@
 {
-    "mapbox_token":"pk.eyJ1Ijoic2hhcmwyMSIsImEiOiJjam9taTl6aXcwa2pnM3F1dTBvempseWZuIn0.Uj2DuyQ7yTzMskBd301bXA"
+    "mapbox_token": "pk.eyJ1Ijoic2hhcmwyMSIsImEiOiJjam9taTl6aXcwa2pnM3F1dTBvempseWZuIn0.Uj2DuyQ7yTzMskBd301bXA",
+    "API": "https://gp-backend-api.herokuapp.com/api"
 }

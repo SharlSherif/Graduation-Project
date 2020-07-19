@@ -1,6 +1,7 @@
 import React from 'react';
 import { Row, Col, } from 'react-bootstrap';
 import CardItem from '../common/CardItem';
+import {  API } from "../../config.json"
 
 class SellerPlaceRequests extends React.Component {
     constructor(props, context) {
@@ -18,7 +19,7 @@ class SellerPlaceRequests extends React.Component {
         await this.fetchPlace()
     }
     async fetchPlace() {
-        let url = 'http://localhost:4000/api/place/' + this.state.placeID
+        let url = API+'/place/' + this.state.placeID
         await fetch(url, {
             method: 'GET', // *GET, POST, PUT, DELETE, etc.
             cache: "no-cache",
@@ -38,7 +39,7 @@ class SellerPlaceRequests extends React.Component {
     }
     async decision(id, type) {
         if (type !== '' && id !== '') {
-            await fetch('http://localhost:4000/api/place/rent/', {
+            await fetch(API+'/place/rent/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

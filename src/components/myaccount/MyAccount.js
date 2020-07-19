@@ -8,6 +8,9 @@ import Settings from './settings';
 import Posts from './Posts';
 import ConfirmedRentals from './ConfirmedRentals';
 import Context from '../context'
+
+import { API } from "../../config.json"
+
 class MyAccount extends React.Component {
    constructor(props, context) {
       super(props, context);
@@ -20,7 +23,7 @@ class MyAccount extends React.Component {
    }
 
    async componentDidMount() {
-      let url = 'http://localhost:4000/api/user/profile/'
+      let url = API+'/user/profile/'
       await fetch(url, {
          method: 'GET', // *GET, POST, PUT, DELETE, etc.
          cache: "no-cache",

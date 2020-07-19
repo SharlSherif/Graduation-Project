@@ -1,5 +1,6 @@
 import React from 'react';
 import { InputGroup, Modal, Alert, Button, Form, ToggleButtonGroup } from 'react-bootstrap';
+import { API } from "../../config.json"
 
 class RentRequestModal extends React.Component {
     state = {
@@ -25,7 +26,7 @@ class RentRequestModal extends React.Component {
     }
 
     requestRental = async () => {
-        let url = 'http://localhost:4000/api/user/rent/request/'
+        let url = API+'/user/rent/request/'
         if (this.state.message.length < 10) {
             return;
         }

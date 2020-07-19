@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col, Container, Form, Button, Alert } from 'react-bootstrap';
+import {  API } from "../../config.json"
 
 class SellerRegisterForm extends React.Component {
     state = {
@@ -28,7 +29,7 @@ class SellerRegisterForm extends React.Component {
         if (this.state.isRemember) {
             localStorage.setItem('rememberUser', JSON.stringify(data))
         }
-        await fetch('http://localhost:4000/api/user/apply/', {
+        await fetch(API+'/user/apply/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

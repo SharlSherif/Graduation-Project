@@ -5,6 +5,7 @@ import Icofont from 'react-icofont';
 import CardItem from './CardItem';
 import TopSearch from '../home/TopSearch'
 import RentalRequestModal from '../modals/RentalRequestModal'
+import {API} from "../../config.json"
 
 class List extends React.Component {
 	constructor(props, context) {
@@ -124,7 +125,7 @@ class List extends React.Component {
 		}
 	}
 	async componentDidMount() {
-		let url = 'http://localhost:4000/api/place/'
+		let url = API + '/place/'
 		await fetch(url, {
 			method: 'GET', // *GET, POST, PUT, DELETE, etc.
 			cache: "no-cache",
