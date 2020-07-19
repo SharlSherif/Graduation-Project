@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useHistory } from "react-router"
 import { Image, Badge, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import Icofont from 'react-icofont';
 import moment from 'moment';
 import { API } from "../../config.json"
+import { withRouter } from 'react-router-dom';
 
 class CardItem extends React.Component {
 	state = {
@@ -12,7 +14,7 @@ class CardItem extends React.Component {
 	}
 
 	remove = async () => {
-		let url = API+'/place/' + this.props.list._id
+		let url = API + '/place/' + this.props.list._id
 		await fetch(url, {
 			method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
 			cache: "no-cache",
@@ -35,6 +37,7 @@ class CardItem extends React.Component {
 			.catch(err => console.log(err))
 	}
 	render() {
+		
 		let list = this.props.list;
 		let id = list._id
 		let author = list.author
@@ -123,11 +126,11 @@ class CardItem extends React.Component {
 									<p style={{ color: 'black' }}><Icofont icon="icofont-user-alt-7" />{`  ${author.username}`}</p>
 								</div>
 								{this.props.isRentButton == true && <Button variant="outline-secondary" onClick={this.props.onRentClick} type="button" id="button-1"><Icofont icon="ui-contact-list" /> Rent</Button>}
-								{this.props.isShowRequestsButton == true && <Button variant="outline-info" onClick={() => window.location = '/myaccount/seller/requests/?' + id} type="button" id="button-1" style={{ marginRight: '2%', width: '49%' }}><Icofont icon="list" /> Requests ({rentalRequestsLength})</Button>}
-								{this.props.isEditButton == true && <Button variant="outline-secondary" type="button" id="button-1" style={{ width: '49%' }} onClick={() => window.location = '/myaccount/seller/edit/?' + id}><Icofont icon="list" /> Edit</Button>}
+								{this.props.isShowRequestsButton == true && <Button variant="outline-info" onClick={() => this.props.history.push('/myaccount/seller/requests/?' + id)} type="button" id="button-1" style={{ marginRight: '2%', width: '49%' }}><Icofont icon="list" /> Requests ({rentalRequestsLength})</Button>}
+								{this.props.isEditButton == true && <Button variant="outline-secondary" type="button" id="button-1" style={{ width: '49%' }} onClick={() => this.props.history.push('/myaccount/seller/edit/?' + id)}><Icofont icon="list" /> Edit</Button>}
 								{this.props.isDeleteButton == true && <Button variant="outline-danger" onClick={this.remove} type="button" id="button-1" style={{ marginTop: 5, width: '100%' }}><Icofont icon="icofont-ui-delete" /> Remove</Button>}
 
-								{this.props.isShowRequestsButton !== true && <Button style={{ width: (this.props.isRentButton == false && this.props.isEditButton == false) ? '100%' : '50%' }} onClick={() => window.location = `/mapfs/?${list.location.lat}:${list.location.lng}`} variant="outline-secondary" type="button" id="button-2">
+								{this.props.isShowRequestsButton !== true && <Button style={{ width: (this.props.isRentButton == false && this.props.isEditButton == false) ? '100%' : '50%' }} onClick={() => this.props.history.push(`/mapfs/?${list.location.lat}:${list.location.lng}`)} variant="outline-secondary" type="button" id="button-2">
 									<span className="icofont-map-pins" style={{ fontSize: 22, marginRight: 3 }} />
 									Directions</Button>}
 							</div>
@@ -184,4 +187,4 @@ class CardItem extends React.Component {
 // 	rating: '',
 // }
 
-export default CardItem;
+export default withRouter(CardItem);

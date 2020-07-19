@@ -37,7 +37,6 @@ class Posts extends React.Component {
     }
 
     render() {
-        console.log(this.context)
         return (
             <>
                 <div className='p-4 bg-white shadow-sm'>
@@ -48,7 +47,7 @@ class Posts extends React.Component {
                                     <h4 className="font-weight-bold mt-0 mb-3">Properties</h4>
                                 </Col>
                                 <Col md={3}>
-                                    <Button style={{ float: 'right' }} onClick={() => window.location = "/myaccount/seller/addplace"} variant="outline-success" type="button" id="button-2"><Icofont icon="plus" /> Add Property</Button>
+                                    <Button style={{ float: 'right' }} onClick={() =>  this.props.history.push("/myaccount/seller/addplace")} variant="outline-success" type="button" id="button-2"><Icofont icon="plus" /> Add Property</Button>
                                 </Col>
                             </Row>
 

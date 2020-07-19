@@ -53,7 +53,7 @@ class Login extends React.Component {
 					console.log('Success:', res);
 					localStorage.setItem('token', res.data.token)
 					localStorage.setItem('user', JSON.stringify(res.data.user))
-					window.location = '/listing'
+					this.props.history.push("/listing")
 				} else {
 					this.setState({
 						error: true,

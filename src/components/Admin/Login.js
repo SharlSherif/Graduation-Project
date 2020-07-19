@@ -50,7 +50,8 @@ class Login extends React.Component {
                     console.log('Success:', res);
                     localStorage.setItem('token', res.data.token)
                     localStorage.setItem('user', JSON.stringify(res.data.admin))
-                    window.location = '/admin/dashboard'
+                    this.props.history.push('/admin/dashboard')
+
                 } else {
                     console.log(res)
                 }

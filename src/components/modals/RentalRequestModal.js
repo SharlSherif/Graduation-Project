@@ -15,7 +15,7 @@ class RentRequestModal extends React.Component {
 
         // user is not logged in
         if (!currentUser) {
-            window.location = '/register'
+            this.props.history.push('/register')
             return
         }
 

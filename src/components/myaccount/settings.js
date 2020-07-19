@@ -43,7 +43,7 @@ class Settings extends React.Component {
                     if (this.state.currentPwd.length > 0) {
                         localStorage.removeItem('token')
                         localStorage.removeItem('user')
-                        window.location = '/login'
+                        this.props.history.push('/login')
                     }
                 }
             })

@@ -5,7 +5,7 @@ import Icofont from 'react-icofont';
 import CardItem from './CardItem';
 import TopSearch from '../home/TopSearch'
 import RentalRequestModal from '../modals/RentalRequestModal'
-import {API} from "../../config.json"
+import { API } from "../../config.json"
 
 class List extends React.Component {
 	constructor(props, context) {
@@ -76,6 +76,7 @@ class List extends React.Component {
 				from: 0,
 				to: 0
 			},
+			listingRender: this.state.listing
 		})
 	}
 

@@ -10,7 +10,13 @@ import ConfirmedRentals from './ConfirmedRentals';
 import Context from '../context'
 
 import { API } from "../../config.json"
-
+const PassProps = ({ component: Component, ...rest }) => {
+   return (
+     <Route {...rest} render={(props) => (
+         <Component {...props} />
+     )} />
+   )
+ }
 class MyAccount extends React.Component {
    constructor(props, context) {
       super(props, context);
@@ -68,10 +74,10 @@ class MyAccount extends React.Component {
                                           <span className="icofont-tick-mark" style={{ height: 10, marginLeft: 4, marginTop: 4 }}></span>
                                        </div>}
                                        {!this.state.user.isSeller && this.state.user.status !== "pending" &&
-                                          <Button onClick={() => window.location = "/myaccount/becomeseller"} style={{ width: '80%', fontSize: 13 }} variant="outline-success" type="button" id="button-2"><Icofont icon="list" /> Agents Application</Button>
+                                          <Button onClick={() => this.props.history.push("/myaccount/becomeseller")} style={{ width: '80%', fontSize: 13 }} variant="outline-success" type="button" id="button-2"><Icofont icon="list" /> Agents Application</Button>
                                        }
                                        {this.state.user.status == "pending" &&
-                                          <Button onClick={() => window.location = "/myaccount/becomeseller"} style={{ width: '80%', fontSize: 13 }} variant="outline-secondary" disabled type="button" id="button-2"><Icofont icon="list" /> Pending </Button>
+                                          <Button onClick={() =>  this.props.history.push("/myaccount/becomeseller")} style={{ width: '80%', fontSize: 13 }} variant="outline-secondary" disabled type="button" id="button-2"><Icofont icon="list" /> Pending </Button>
                                        }
                                     </div>
                                  </div>
@@ -104,10 +110,10 @@ class MyAccount extends React.Component {
                      </Col>
                      <Col md={9}>
                         <Switch>
-                           <Route path="/myaccount/requests" exact component={RentalRequests} />
-                           <Route path="/myaccount/rentals" exact component={ConfirmedRentals} />
-                           <Route path="/myaccount/posts" exact component={Posts} />
-                           <Route path="/myaccount/settings" exact component={Settings} />
+                           <PassProps path="/myaccount/requests" exact component={RentalRequests} />
+                           <PassProps path="/myaccount/rentals" exact component={ConfirmedRentals} />
+                           <PassProps path="/myaccount/posts" exact component={Posts} />
+                           <PassProps path="/myaccount/settings" exact component={Settings} />
                         </Switch>
                      </Col>
                   </Row>

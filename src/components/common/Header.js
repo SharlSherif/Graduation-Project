@@ -36,7 +36,7 @@ class Header extends React.Component {
 	logout = () => {
 		localStorage.removeItem('token')
 		localStorage.removeItem('user')
-		window.location = ('/listing')
+		this.props.history.push("/listing")
 	}
 
 	render() {
@@ -45,7 +45,7 @@ class Header extends React.Component {
 				<Navbar onToggle={this.setIsNavExpanded}
 					expanded={this.state.isNavExpanded} color="light" expand='lg' className="navbar-light osahan-nav shadow-sm">
 					<Container>
-						<Navbar.Brand to="/" onClick={x => window.location = '/'}><Image src="/img/Logo.png" alt='' width="200px" /></Navbar.Brand>
+						<Navbar.Brand to="/" onClick={x =>  this.props.history.push('/')}><Image src="/img/Logo.png" alt='' width="200px" /></Navbar.Brand>
 						<Navbar.Toggle />
 						<Navbar.Collapse id="navbarNavDropdown">
 							<Nav activeKey={0} className="ml-auto" onSelect={this.closeMenu}>

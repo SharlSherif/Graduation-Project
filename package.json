@@ -19,6 +19,7 @@
     "react-images-upload": "^1.2.8",
     "react-owl-carousel3": "^2.2.5",
     "react-responsive-carousel": "^3.2.7",
+    "react-router": "^5.2.0",
     "react-router-dom": "^5.0.1",
     "react-scripts": "^3.4.1",
     "react-select": "^3.1.0",

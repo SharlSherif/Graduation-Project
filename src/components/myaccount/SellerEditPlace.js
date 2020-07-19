@@ -173,7 +173,7 @@ class SellerEditPlace extends React.Component {
                 // }
                 if (json.success) {
                     this.setState({ errors: [], success: true })
-                    window.location = "/myaccount/posts"
+                    this.props.history.push("/myaccount/posts")
                 }
                 console.log(json)
             })

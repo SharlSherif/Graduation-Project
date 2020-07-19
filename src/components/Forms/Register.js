@@ -56,7 +56,7 @@ class Register extends React.Component {
 					console.log('Success:', res);
 					localStorage.setItem('token', res.token)
 					localStorage.setItem('user', JSON.stringify(res.response.data))
-					window.location = '/listing'
+					this.props.history.push("/listing")
 				} else {
 					this.setState({
 						error: true,

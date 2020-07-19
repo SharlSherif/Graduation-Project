@@ -51,7 +51,7 @@ class SellerRegisterForm extends React.Component {
                     // set status to pending for this session
                     let newUser = { ...JSON.parse(localStorage.user), status: "pending" }
                     localStorage.user = JSON.stringify(newUser)
-                    window.location = '/myaccount/rentals'
+                    this.props.history.push('/myaccount/rentals')
                 } else {
                     this.setState({
                         error: true,
