@@ -11,9 +11,9 @@ require('dotenv').config()
 require('./database')
 //? routes
 const AuthRoute = require('./routes/auth.route')
-const AdminRoute = require('./routes/Admin.route')
-const UserRoute = require('./routes/User.route')
-const PlaceRoute = require('./routes/Place.route')
+const AdminRoute = require('./routes/admin.route')
+const UserRoute = require('./routes/user.route')
+const PlaceRoute = require('./routes/place.route')
 const authenticate = require('./middlewares/check-auth')
 app.use(morgan('dev'))
 
