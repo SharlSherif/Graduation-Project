@@ -2,7 +2,8 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const app = express()
-var cors = require('cors')
+const cors = require('cors')
+const port = process.env.PORT || 4000
 
 //? make enviroment variables accessible
 require('dotenv').config()
@@ -43,4 +44,4 @@ app.use('/api/user', authenticate, UserRoute)
 app.use('/api/admin', authenticate, AdminRoute)
 app.use('/api/place', PlaceRoute)
 
-app.listen(4000, () => console.log('GP up on 4000..'))
+app.listen(port, () => console.log(`GP up on ${port}..`))
